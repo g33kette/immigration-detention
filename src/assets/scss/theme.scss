@@ -1,0 +1,20 @@
+
+// Import Variables
+@import './variables';
+
+// Import UIKit
+@import '../../../node_modules/uikit/src/scss/uikit-theme';
+
+.uk-alert.uk-alert-secondary {
+  background-color: lighten($global-secondary-background, 15%);
+  color: $text-on-secondary-color;
+}
+
+.uk-button.uk-button-secondary {
+  color: $text-on-secondary-color;
+}
+
+a, .uk-button {
+  text-transform: none !important;
+  font-weight: 500;
+}

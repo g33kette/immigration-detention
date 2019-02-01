@@ -1,0 +1,13 @@
+
+// Custom UIKit Variables
+$global-primary-background: #333333;
+$global-secondary-background: #90f86c;
+
+// Import UIKit Variables
+@import '../../../node_modules/uikit/src/scss/variables-theme.scss';
+@import '../../../node_modules/uikit/src/scss/mixins-theme.scss';
+
+// Any custom mixins?
+
+// Any Additional Variables
+$text-on-secondary-color: $text-primary-color;

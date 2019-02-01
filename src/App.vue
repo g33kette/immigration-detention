@@ -1,28 +1,32 @@
+<!--
+ * App
+ *
+ * Main/entry component
+-->
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <header class="uk-position-fixed uk-position-top uk-position-z-index">
+      <navigation />
+    </header>
+    <div style="margin-top: 80px;">
+      <div class="uk-container uk-container-expand">
+        <div class="uk-margin-top uk-margin-bottom">
+          <router-view />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import Navigation from './components/Navigation';
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+  export default {
+    name: 'App',
+    components: { Navigation },
+  };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  @import 'assets/scss/theme';
 </style>
