@@ -31,6 +31,7 @@
                 data.push({ date: new Date(2018, 0, i), name: "name" + i, value: visits });
             }
 
+            console.log(data);
             chart.data = data;
 
             let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
