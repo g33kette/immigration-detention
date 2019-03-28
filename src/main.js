@@ -9,15 +9,21 @@ import VueRouter from 'vue-router';
 import store from './store.js';
 
 require('uikit/dist/js/uikit');
-require('uikit/dist/js/uikit-icons');
+
+import { loadIcons } from './icons.js';
+loadIcons();
+
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: (h) => h(App),
+    el: '#app',
+    router,
+    store,
+    render: (h) => h(App),
 }).$mount('#app');

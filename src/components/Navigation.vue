@@ -4,33 +4,38 @@
  * Navigation Menu
 -->
 <template>
-    <div class="component-navigation uk-container uk-container-expand uk-background-primary">
-        <nav class="uk-navbar uk-light" uk-navbar>
-            <div class="uk-navbar-left uk-width-1-1">
-                <!-- Nav Bar Logo -->
-                <a class="uk-navbar-item uk-logo" href="#">
-                    <img alt="Drop Logo"
-                         src="./../assets/images/drop-small-green.png"
-                         style="height: 1.5em; width: 1.5em">
-                </a>
-                <!-- Nav Bar Links -->
-                <ul class="uk-navbar-nav">
-                    <!-- Overview -->
-                    <li :class="{ 'uk-active': active==='index' }">
-                        <router-link to="/">Overview</router-link>
-                    </li>
-                    <!-- Further Analysis -->
-                    <li :class="{ 'uk-active': active==='analysis' }">
-                        <router-link to="/analysis">Data Analysis</router-link>
-                    </li>
-                    <!-- References -->
-                    <li :class="{ 'uk-active': active==='references' }">
-                        <router-link to="/references">References</router-link>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
+    <nav class="component-navigation uk-background-secondary">
+        <div class="uk-navbar-left uk-width-auto">
+            <!-- Nav Bar Links -->
+            <ul class="uk-nav uk-light uk-margin-remove">
+                <!-- Overview -->
+                <li :class="{ 'uk-active': active==='index', 'uk-padding-small  uk-box-shadow-medium': true }">
+                    <router-link to="/" class="uk-height-1-1">Overview</router-link>
+                    <!--<div class="arrow-right"></div>-->
+                </li>
+                <!-- Further Analysis -->
+                <li :class="{ 'uk-active': active==='analysis', 'uk-padding-small': true }">
+                    <router-link to="/analysis" class="uk-height-1-1">Origin of Detainees</router-link>
+                </li>
+                <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                    <router-link to="/analysis" class="uk-height-1-1">Annual Trends</router-link>
+                </li>
+                <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                    <router-link to="/analysis" class="uk-height-1-1">People Entering/<br>Leaving Detention</router-link>
+                </li>
+                <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                    <router-link to="/analysis" class="uk-height-1-1">Detention Centres</router-link>
+                </li>
+                <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                    <router-link to="/analysis" class="uk-height-1-1">Prosecutions for <br>Immigration Offences</router-link>
+                </li>
+                <!-- References -->
+                <li :class="{ 'uk-active': active==='references', 'uk-padding-small': true }">
+                    <router-link to="/references" class="uk-height-1-1">References</router-link>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </template>
 
 <script>
@@ -49,3 +54,20 @@ export default {
 };
 </script>
 
+<style lang="scss" scoped>
+    @import '../assets/scss/variables';
+    nav {
+        font-size: 20px;
+        li {
+            height: 4em;
+            border-bottom: solid 3px $global-secondary-background;
+            &.uk-active {
+                border-bottom: solid 3px $global-emphasis-color;
+                background: lighten($global-secondary-background, 5%);
+                a, a:active, a:focus, a:hover {
+                    color: $text-on-secondary-color;
+                }
+            }
+        }
+    }
+</style>

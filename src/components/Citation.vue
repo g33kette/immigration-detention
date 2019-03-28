@@ -2,7 +2,7 @@
  * Citation Component
 -->
 <template>
-    <router-link :to="'/references/'+ref" class="citation">{{ ref }}</router-link>
+    <router-link :to="'/references/'+ref" class="citation">[{{ ref }}] {{ citation}}</router-link>
 </template>
 
 <script>
@@ -15,6 +15,7 @@ export default {
     computed: {
         ...mapGetters([
             'referenceId',
+            'reference',
         ]),
         ref() {
             const ref = this.referenceId(this.tag);
@@ -23,18 +24,15 @@ export default {
             }
             return ref;
         },
+        citation() {
+            return this.reference(this.ref).citation;
+        },
     },
 };
 </script>
 
 <style lang="scss">
     a.citation {
-        &::before {
-            content: '[ ';
-        }
-        &::after {
-            content: ' ]';
-        }
         font-size: .9rem;
     }
 </style>

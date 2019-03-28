@@ -3,12 +3,12 @@
 -->
 <template>
     <div class="component-index-controller uk-container">
-        <h1 class="uk-h1 uk-margin-top">
+        <h2 class="uk-h1 uk-margin-top">
             References
-        </h1>
+        </h2>
         <div class="uk-section-small uk-section-muted uk-padding">
             <div v-for="(ref, i) in references" :id="i+1" :key="i"
-                 class="uk-card uk-card-default uk-card-body uk-width-1-1 uk-card-small uk-text-small ref">
+                 class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small uk-text-small ref">
                 <p class="ref-id uk-align-right">[ {{ i+1 }} ]</p>
                 <p class="ref-title">{{ ref.title }}</p>
                 <p class="ref-date-published uk-align-right"> Publication Date: {{ ref.datePublished }}</p>

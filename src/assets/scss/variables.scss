@@ -1,7 +1,11 @@
 
+@import url('https://fonts.googleapis.com/css?family=Zilla+Slab|Roboto');
+
 // Custom UIKit Variables
-$global-primary-background: #333333;
-$global-secondary-background: #90f86c;
+$global-primary-background: #f89c2f;
+$global-emphasis-color: #f89c2f;
+$global-secondary-background: #000000;
+$global-font-family: 'Zilla Slab', serif;
 
 // Import UIKit Variables
 @import '../../../node_modules/uikit/src/scss/variables-theme.scss';
@@ -10,4 +14,5 @@ $global-secondary-background: #90f86c;
 // Any custom mixins?
 
 // Any Additional Variables
-$text-on-secondary-color: $text-primary-color;
+$text-on-secondary-color: #fff;
+$nav-font-family: 'Roboto', sans-serif;
