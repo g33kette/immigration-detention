@@ -7,6 +7,7 @@ import App from './App.vue';
 import router from './router.js';
 import VueRouter from 'vue-router';
 import store from './store.js';
+import axios from 'axios'
 
 require('uikit/dist/js/uikit');
 
@@ -19,6 +20,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
+Vue.use(axios);
 Vue.use(VueRouter);
 
 new Vue({

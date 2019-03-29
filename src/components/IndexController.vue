@@ -8,7 +8,9 @@
         <div uk-grid>
             <div class="uk-width-2-3">
                 <div class="detainees uk-card uk-card-default uk-padding uk-text-center uk-text-bottom">
-                    <h3 class="uk-heading-divider uk-h3">People Detained Under UK Immigration Law <span class="uk-text-muted">Throughout 2018</span></h3>
+                    <h3 class="uk-heading-divider uk-h3">
+                        People Detained Under UK Immigration Law <span class="uk-text-muted">Throughout 2018</span>
+                    </h3>
                     <div uk-grid>
                         <div class="uk-width-1-3 uk-inline">
                             <div class="">

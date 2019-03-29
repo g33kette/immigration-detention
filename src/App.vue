@@ -4,12 +4,12 @@
  * Main/entry component
 -->
 <template>
-    <div id="app" class="uk-position-absolute uk-height-1-1">
+    <div id="app" class="uk-position-absolute uk-height-1-1 uk-width-1-1">
         <div class="uk-background-cover uk-position-fixed uk-position-top-left uk-height-1-1 uk-width-1-1"></div>
-        <div class="uk-grid uk-grid-collapse uk-margin-top expand-height">
+        <div class="uk-grid uk-grid-collapse uk-margin-top expand-height uk-width-1-1">
             <navigation class="uk-width-auto expand-height" />
             <div id="content" class="uk-width-expand">
-                <div class="uk-container uk-container-expand">
+                <div class="uk-container uk-container-expand uk-width-1-1">
                     <div class="uk-margin-bottom">
                         <div class="uk-width-1-1 uk-padding-small uk-text-left">
                             <h1 class="uk-heading-primary uk-heading-bullet">Immigration Detention in the UK</h1>

@@ -5,36 +5,34 @@
 -->
 <template>
     <nav class="component-navigation uk-background-secondary">
-        <div class="uk-navbar-left uk-width-auto">
-            <!-- Nav Bar Links -->
-            <ul class="uk-nav uk-light uk-margin-remove">
-                <!-- Overview -->
-                <li :class="{ 'uk-active': active==='index', 'uk-padding-small  uk-box-shadow-medium': true }">
-                    <router-link to="/" class="uk-height-1-1">Overview</router-link>
-                    <!--<div class="arrow-right"></div>-->
-                </li>
-                <!-- Further Analysis -->
-                <li :class="{ 'uk-active': active==='analysis', 'uk-padding-small': true }">
-                    <router-link to="/analysis" class="uk-height-1-1">Origin of Detainees</router-link>
-                </li>
-                <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                    <router-link to="/analysis" class="uk-height-1-1">Annual Trends</router-link>
-                </li>
-                <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                    <router-link to="/analysis" class="uk-height-1-1">People Entering/<br>Leaving Detention</router-link>
-                </li>
-                <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                    <router-link to="/analysis" class="uk-height-1-1">Detention Centres</router-link>
-                </li>
-                <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                    <router-link to="/analysis" class="uk-height-1-1">Prosecutions for <br>Immigration Offences</router-link>
-                </li>
-                <!-- References -->
-                <li :class="{ 'uk-active': active==='references', 'uk-padding-small': true }">
-                    <router-link to="/references" class="uk-height-1-1">References</router-link>
-                </li>
-            </ul>
-        </div>
+        <!-- Nav Bar Links -->
+        <ul class="uk-nav uk-light uk-margin-remove">
+            <!-- Overview -->
+            <li :class="{ 'uk-active': active==='index', 'uk-padding-small  uk-box-shadow-medium': true }">
+                <router-link to="/" class="uk-height-1-1">Overview</router-link>
+                <!--<div class="arrow-right"></div>-->
+            </li>
+            <!-- Further Analysis -->
+            <li :class="{ 'uk-active': active==='detainee-origin', 'uk-padding-small': true }">
+                <router-link to="/detainee-origin" class="uk-height-1-1">Origin of Detainees</router-link>
+            </li>
+            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                <router-link to="/analysis" class="uk-height-1-1">Annual Trends</router-link>
+            </li>
+            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                <router-link to="/analysis" class="uk-height-1-1">People Entering/<br>Leaving Detention</router-link>
+            </li>
+            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                <router-link to="/analysis" class="uk-height-1-1">Detention Centres</router-link>
+            </li>
+            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                <router-link to="/analysis" class="uk-height-1-1">Prosecutions for <br>Immigration Offences</router-link>
+            </li>
+            <!-- References -->
+            <li :class="{ 'uk-active': active==='references', 'uk-padding-small': true }">
+                <router-link to="/references" class="uk-height-1-1">References</router-link>
+            </li>
+        </ul>
     </nav>
 </template>
 

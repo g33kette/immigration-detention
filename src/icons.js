@@ -2,7 +2,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faMale,
     faFemale,
-    faChild, faExclamationTriangle,
+    faChild, faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 
 /**
@@ -12,5 +12,5 @@ export function loadIcons() {
     library.add(faMale);
     library.add(faFemale);
     library.add(faChild);
-    library.add(faExclamationTriangle);
+    library.add(faCircleNotch);
 }
