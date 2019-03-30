@@ -14,57 +14,81 @@ import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 am4core.useTheme(am4themesAnimated);
 export default {
     name: 'Chart',
+    props: {
+        seriesData: { required: true, type: Array },
+        series: { required: true, type: Array },
+    },
     data() {
         return {
             chart: null,
+            colorsList: [
+                am4core.color('#f89c2f'),
+                am4core.color('#f18713'),
+                am4core.color('#ffc35c'),
+                am4core.color('#e7b978'),
+                am4core.color('#1c1c1c'),
+                am4core.color('#383838'),
+                am4core.color('#606060'),
+                am4core.color('#7b7b7b'),
+            ],
         };
-    },
-    mounted() {
-        const chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
-        chart.paddingRight = 20;
-
-        const data = [];
-        let visits = 10;
-        for (let i = 1; i < 366; i++) {
-            visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-            data.push({ date: new Date(2018, 0, i), name: 'name' + i, value: visits });
-        }
-
-        console.log(data);
-        chart.data = data;
-
-        const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-        dateAxis.renderer.grid.template.location = 0;
-
-        const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-        valueAxis.tooltip.disabled = true;
-        valueAxis.renderer.minWidth = 35;
-
-        const series = chart.series.push(new am4charts.LineSeries());
-        series.dataFields.dateX = 'date';
-        series.dataFields.valueY = 'value';
-
-        series.tooltipText = '{valueY.value}';
-        chart.cursor = new am4charts.XYCursor();
-
-        const scrollbarX = new am4charts.XYChartScrollbar();
-        scrollbarX.series.push(series);
-        chart.scrollbarX = scrollbarX;
-
-        this.chart = chart;
-    },
-    beforeDestroy() {
-        if (this.chart) {
-            this.chart.dispose();
-        }
-    },
-    methods: {
-        renderChart() {
-        },
     },
     watch: {
         series() {
             this.renderChart();
+        },
+    },
+    mounted() {
+        this.renderChart();
+    },
+    beforeDestroy() {
+        this.destroyChart();
+    },
+    methods: {
+        destroyChart() {
+            if (this.chart) {
+                this.chart.dispose();
+            }
+        },
+        renderChart() {
+            this.destroyChart();
+
+            const chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
+
+            chart.colors.list = this.colorsList;
+
+            // Set Series Data
+            chart.data = this.seriesData;
+            // console.log(this.seriesData);
+
+            chart.dateFormatter.inputDateFormat = 'yyyy';
+            const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+            dateAxis.renderer.minGridDistance = 60;
+            dateAxis.startLocation = 0.5;
+            dateAxis.endLocation = 0.5;
+            dateAxis.baseInterval = {
+                timeUnit: 'year',
+                count: 1,
+            };
+
+            // Add value axis
+            chart.yAxes.push(new am4charts.ValueAxis());
+
+            // Add Series
+            for (const addSeries of this.series) {
+                chart.series.push(addSeries);
+            }
+
+            chart.cursor = new am4charts.XYCursor();
+            chart.cursor.xAxis = dateAxis;
+            // chart.scrollbarX = new am4core.Scrollbar();
+
+            // Add a legend
+            chart.legend = new am4charts.Legend();
+            chart.legend.position = 'bottom';
+
+            this.chart = chart;
+            this.$emit('updated', { action: 'render' });
         },
     },
 };

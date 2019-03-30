@@ -47,7 +47,7 @@
                     <br>
                     <span class="uk-text-muted">
                         Home Office practice of detaining asylum seekers and others to pursue immigration-related purposes.<br>
-                        It is an administrative process rather than a criminal procedure.
+                        <span class="uk-light">It is an administrative process rather than a criminal procedure.</span>
                     </span><br>
                     <citation tag="migration-observatory-1" />
                 <!--The reasons to hold someone in immigration detention include one or more of the following: to effect a
@@ -104,9 +104,9 @@ export default {
     components: { Citation },
     data() {
         return {
-            men: 28397,
-            women: 5605,
-            children: 43,
+            men: 21069,
+            women: 3616,
+            children: 63,
         };
     },
     computed: {
@@ -130,6 +130,9 @@ export default {
             text-transform: none;
             font-size: .8em;
         }
+    }
+    .uk-light {
+        color: #fff;
     }
 </style>
 

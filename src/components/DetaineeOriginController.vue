@@ -2,7 +2,7 @@
  * DetaineeOriginController
 -->
 <template>
-    <div class="component-analysis-controller uk-container">
+    <div class="component-detainee-origin-controller uk-container">
         <div class="uk-card uk-card-default uk-padding uk-width-1-1">
             <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
@@ -86,18 +86,22 @@
                     </div>
                 </div>
             </form>
+            <div class="uk-margin">
+                <citation tag="detention-stats" class="uk-align-right" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import Map from './Map';
+import Citation from './Citation';
 import * as am4core from '@amcharts/amcharts4/core';
 import LoadingCover from './LoadingCover';
 import axios from 'axios';
 export default {
     name: 'DetaineeOriginController',
-    components: { 'loading': LoadingCover, 'map-chart': Map },
+    components: { 'loading': LoadingCover, 'map-chart': Map, 'citation': Citation },
     data() {
         return {
             loading: true,
