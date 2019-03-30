@@ -4,15 +4,25 @@
 <template>
     <div class="component-analysis-controller uk-container">
         <div class="uk-card uk-card-default uk-padding uk-width-1-1">
-            <loading message="Loading Data..." v-if="loading" />
+            <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
-                Origin of UK Immigration Detainees <span class="uk-text-muted">{{year==='total'?'All Available Years':year}}</span>
+                Origin of UK Immigration Detainees
+                <span class="uk-text-muted">{{ year==='total'?'All Available Years':year }}</span>
             </h3>
-            <map-chart class="map uk-height-large"
-                       v-if="series"
-                       :series-data="series"
-                       :active-series="year"
-                       :custom-template="customTemplate" />
+            <div class="uk-position-relative">
+                <loading v-if="rendering&&!loading" :opacity="0.5" />
+                <map-chart v-if="series"
+                           class="map uk-height-large"
+                           :series-data="series"
+                           :active-series="year"
+                           :custom-template="customTemplate"
+                           @updated="mapUpdated" />
+            </div>
+            <div class="legend uk-align-right uk-text-small">
+                <div class="legend-gradient" />
+                <span class="uk-align-left">Low {{ lowValue }}</span>
+                <span class="uk-align-right">High  {{ highValue }}</span>
+            </div>
             <form class="uk-form-horizontal uk-margin-large-top" @submit.prevent>
                 <div uk-grid>
                     <div class=" uk-width-1-3">
@@ -32,23 +42,43 @@
                             <label class="uk-form-label" for="year">Shading:</label>
                             <div class="uk-radio-controls uk-grid-small uk-child-width-auto uk-grid">
                                 <label>
-                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="total">
+                                    <input v-model="shading"
+                                           class="uk-radio"
+                                           type="radio"
+                                           name="shading"
+                                           value="total">
                                     Total
                                 </label>
                                 <label>
-                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="adults">
+                                    <input v-model="shading"
+                                           class="uk-radio"
+                                           type="radio"
+                                           name="shading"
+                                           value="adults">
                                     Adults
                                 </label>
                                 <label>
-                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="children">
+                                    <input v-model="shading"
+                                           class="uk-radio"
+                                           type="radio"
+                                           name="shading"
+                                           value="children">
                                     Children
                                 </label>
                                 <label>
-                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="male">
+                                    <input v-model="shading"
+                                           class="uk-radio"
+                                           type="radio"
+                                           name="shading"
+                                           value="male">
                                     Male
                                 </label>
                                 <label>
-                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="female">
+                                    <input v-model="shading"
+                                           class="uk-radio"
+                                           type="radio"
+                                           name="shading"
+                                           value="female">
                                     Female
                                 </label>
                             </div>
@@ -71,12 +101,19 @@ export default {
     data() {
         return {
             loading: true,
+            rendering: true,
             year: 2018,
             shading: 'total',
             availableYears: [],
             series: null,
-            customTemplate: {
-                propertyFields: { fill: 'totalShading' },
+            extremes: {},
+            totalExtremes: {},
+        };
+    },
+    computed: {
+        customTemplate() {
+            return {
+                propertyFields: { fill: this.shading+'Shading' },
                 tooltipText: `[bold]{name}[/]
                     {total} Detainees
                     -------
@@ -85,16 +122,40 @@ export default {
                     {male} Men
                     {female} Women`,
                 pointerOrientation: 'vertical',
-            },
-        };
+            };
+        },
+        lowValue() {
+            return 0;
+        },
+        highValue() {
+            const extremes = this.year === 'total'?this.totalExtremes:this.extremes;
+            let key;
+            switch (this.shading) {
+            case 'total':
+                key = 'maxTotal';
+                break;
+            case 'adults':
+                key = 'maxAdults';
+                break;
+            case 'children':
+                key = 'maxChildren';
+                break;
+            case 'male':
+                key = 'maxMale';
+                break;
+            case 'female':
+                key = 'maxFemale';
+                break;
+            }
+            return extremes[key];
+        },
     },
     watch: {
-        shading(val) {
-            this.$set(
-                this,
-                'customTemplate',
-                Object.assign({}, this.customTemplate, { propertyFields: { fill: val+'Shading' } })
-            );
+        shading() {
+            this.rendering = true;
+        },
+        year() {
+            this.rendering = true;
         },
     },
     mounted() {
@@ -107,6 +168,8 @@ export default {
         async loadSeriesData() {
             this.loading = true;
             const responseData = (await this.callLoadData()).data;
+            this.extremes = responseData.extremes;
+            this.totalExtremes = responseData.totalExtremes;
             const series = {};
             this.availableYears = [];
             for (const year in responseData.data) {
@@ -137,6 +200,10 @@ export default {
             const col = value === 0 ? 205 : (Math.floor(180 - ((180/extreme) * value)));
             return am4core.color('rgb(' + col + ', ' + col + ', ' + col + ')');
         },
+        mapUpdated({ action }) {
+            // console.log('updated', action);
+            setTimeout(() => this.rendering = false, 200);
+        },
     },
 };
 </script>
@@ -152,7 +219,16 @@ export default {
         }
         .uk-radio-controls {
             padding-top: 7px;
+            label {
+                cursor: pointer;
+            }
         }
+    }
+    .legend-gradient {
+        width: 200px;
+        height: 15px;
+        background: linear-gradient(to right, rgb(205,205,205) , black);
+        border-radius: 3px;
     }
 </style>
 

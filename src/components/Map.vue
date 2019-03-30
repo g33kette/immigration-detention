@@ -28,22 +28,10 @@ export default {
     },
     watch: {
         activeSeries() {
-            if (this.map) {
-                this.map.series.clear();
-                this.addMapSeries(this.map, this.seriesData[this.activeSeries]);
-                this.map.validateData();
-            } else {
-                this.renderMap();
-            }
+            this.redrawMap();
         },
         customTemplate() {
-            if (this.map) {
-                this.map.series.clear();
-                this.addMapSeries(this.map, this.seriesData[this.activeSeries]);
-                this.map.validateData();
-            } else {
-                this.renderMap();
-            }
+            this.redrawMap();
         },
     },
     mounted() {
@@ -67,6 +55,7 @@ export default {
             const map = am4core.create(this.$refs.mapdiv, am4maps.MapChart);
 
             // Change background color
+            // map.background.fill = am4core.color('#f8e7d9');
             map.background.fill = am4core.color('#ffffff');
             map.background.fillOpacity = 1;
 
@@ -82,6 +71,7 @@ export default {
             this.addMapSeries(map, this.seriesData[this.activeSeries]);
 
             this.map = map;
+            this.$emit('updated', { action: 'render' });
         },
         addMapSeries(map, data) {
             const polygonSeries = new am4maps.MapPolygonSeries();
@@ -96,6 +86,7 @@ export default {
             // Hover state
             const hs = polygonTemplate.states.create('hover');
             hs.properties.fill = am4core.color(this.hoverColor);
+            return polygonSeries;
         },
         assignRecursively(target, map) {
             for (const k in map) {
@@ -108,6 +99,20 @@ export default {
                 }
             }
             return target;
+        },
+        redrawMap() {
+            if (!this.map) {
+                this.renderMap();
+                return;
+            }
+            const polygonSeries = this.addMapSeries(this.map, this.seriesData[this.activeSeries]);
+            polygonSeries.events.on('ready', () => {
+                setTimeout(() => {
+                    this.map.series.shift();
+                }, 500);
+                this.$emit('updated', { action: 'update' });
+            });
+            this.map.validateData();
         },
     },
 };
