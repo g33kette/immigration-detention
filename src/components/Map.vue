@@ -16,11 +16,10 @@ am4core.useTheme(am4themesAnimated);
 export default {
     name: 'Map',
     props: {
-        series: { required: false, type: Object },
-        // lowColor: { required: false, type: String, default: '#7b1313' },
-        // highColor: { required: false, type: String, default: '#173c7b' },
+        seriesData: { required: false, type: Object, default: () => {} },
+        activeSeries: { required: true, type: [Number, String] },
+        customTemplate: { required: false, type: Object, default: () => ({}) },
         hoverColor: { required: false, type: String, default: '#f89c2f' },
-        hoverTooltip: { required: false, type: String, default: '{name}' },
     },
     data() {
         return {
@@ -28,17 +27,30 @@ export default {
         };
     },
     watch: {
-        series() {
-            this.renderMap();
+        activeSeries() {
+            if (this.map) {
+                this.map.series.clear();
+                this.addMapSeries(this.map, this.seriesData[this.activeSeries]);
+                this.map.validateData();
+            } else {
+                this.renderMap();
+            }
+        },
+        customTemplate() {
+            if (this.map) {
+                this.map.series.clear();
+                this.addMapSeries(this.map, this.seriesData[this.activeSeries]);
+                this.map.validateData();
+            } else {
+                this.renderMap();
+            }
         },
     },
     mounted() {
         this.renderMap();
     },
     beforeDestroy() {
-        if (this.map) {
-            this.map.dispose();
-        }
+        this.destroyMap();
     },
     methods: {
         destroyMap() {
@@ -47,34 +59,55 @@ export default {
             }
         },
         renderMap() {
-            console.log('renderMap', this.series);
             this.destroyMap();
-
-            if (!this.series) {
+            if (typeof this.seriesData[this.activeSeries] === 'undefined') {
                 return; // nothing to render
             }
 
             const map = am4core.create(this.$refs.mapdiv, am4maps.MapChart);
+
+            // Change background color
+            map.background.fill = am4core.color('#ffffff');
+            map.background.fillOpacity = 1;
+
+            // Add zoom controls
+            map.zoomControl = new am4maps.ZoomControl();
+            map.zoomControl.slider.height = 100;
 
             // Set map definition
             map.geodata = am4geodataWorldLow;
 
             // Set projection
             map.projection = new am4maps.projections.Miller();
+            this.addMapSeries(map, this.seriesData[this.activeSeries]);
 
-            // Series for World map
-            const worldSeries = map.series.push(this.series);
-            worldSeries.useGeodata = true;
-            worldSeries.exclude = ['AQ'];
+            this.map = map;
+        },
+        addMapSeries(map, data) {
+            const polygonSeries = new am4maps.MapPolygonSeries();
+            polygonSeries.data = data;
+            map.series.push(polygonSeries);
+            polygonSeries.useGeodata = true;
+            polygonSeries.exclude = ['AQ'];
 
-            const polygonTemplate = worldSeries.mapPolygons.template;
-            // polygonTemplate.tooltipText = this.hoverTooltip;
+            const polygonTemplate = polygonSeries.mapPolygons.template;
+            this.assignRecursively(polygonTemplate, this.customTemplate);
 
             // Hover state
             const hs = polygonTemplate.states.create('hover');
             hs.properties.fill = am4core.color(this.hoverColor);
-
-            this.map = map;
+        },
+        assignRecursively(target, map) {
+            for (const k in map) {
+                if (map.hasOwnProperty(k)) {
+                    if (typeof map[k] === 'object') {
+                        target[k] = this.assignRecursively(target[k], map[k]);
+                    } else {
+                        target[k] = map[k];
+                    }
+                }
+            }
+            return target;
         },
     },
 };

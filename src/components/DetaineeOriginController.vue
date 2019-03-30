@@ -6,27 +6,62 @@
         <div class="uk-card uk-card-default uk-padding uk-width-1-1">
             <loading message="Loading Data..." v-if="loading" />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
-                Origin of UK Immigration Detainees <span class="uk-text-muted">{{ year }}</span>
+                Origin of UK Immigration Detainees <span class="uk-text-muted">{{year==='total'?'All Available Years':year}}</span>
             </h3>
-            <!--<map-chart class="map uk-height-large" :series="series[year]" />-->
-            <div>
-                <label class="uk-form-label" for="year">Change Year:</label>
-                <select id="year" class="uk-form-controls" v-model="year">
-                    <option>2018</option>
-                    <option>2017</option>
-                    <option>2016</option>
-                    <option>2015</option>
-                    <option>2014</option>
-                    <option>2013</option>
-                </select>
-            </div>
+            <map-chart class="map uk-height-large"
+                       v-if="series"
+                       :series-data="series"
+                       :active-series="year"
+                       :custom-template="customTemplate" />
+            <form class="uk-form-horizontal uk-margin-large-top" @submit.prevent>
+                <div uk-grid>
+                    <div class=" uk-width-1-3">
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="year">Change Year:</label>
+                            <div class="uk-form-controls">
+                                <select id="year" v-model="year" class="uk-select">
+                                    <option v-for="y in availableYears" :key="y" :value="y">
+                                        {{ y==='total'?'All Available':y }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" uk-width-2-3">
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="year">Shading:</label>
+                            <div class="uk-radio-controls uk-grid-small uk-child-width-auto uk-grid">
+                                <label>
+                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="total">
+                                    Total
+                                </label>
+                                <label>
+                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="adults">
+                                    Adults
+                                </label>
+                                <label>
+                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="children">
+                                    Children
+                                </label>
+                                <label>
+                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="male">
+                                    Male
+                                </label>
+                                <label>
+                                    <input v-model="shading" class="uk-radio" type="radio" name="shading" value="female">
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
 import Map from './Map';
-import { MapPolygonSeries } from '@amcharts/amcharts4/maps';
 import * as am4core from '@amcharts/amcharts4/core';
 import LoadingCover from './LoadingCover';
 import axios from 'axios';
@@ -37,17 +72,33 @@ export default {
         return {
             loading: true,
             year: 2018,
-            series: {},
+            shading: 'total',
+            availableYears: [],
+            series: null,
+            customTemplate: {
+                propertyFields: { fill: 'totalShading' },
+                tooltipText: `[bold]{name}[/]
+                    {total} Detainees
+                    -------
+                    {adults} Adults
+                    {children} Children
+                    {male} Men
+                    {female} Women`,
+                pointerOrientation: 'vertical',
+            },
         };
     },
     watch: {
-        year() {
-            // this.loadMap();
+        shading(val) {
+            this.$set(
+                this,
+                'customTemplate',
+                Object.assign({}, this.customTemplate, { propertyFields: { fill: val+'Shading' } })
+            );
         },
     },
-    async mounted() {
-        this.series = (await this.loadSeriesData());
-        // this.loadMap();
+    mounted() {
+        this.loadSeriesData();
     },
     methods: {
         callLoadData() {
@@ -57,56 +108,52 @@ export default {
             this.loading = true;
             const responseData = (await this.callLoadData()).data;
             const series = {};
-            for (const year in responseData) {
-                if (responseData.hasOwnProperty(year)) {
-                    const responseYearData = responseData[year];
+            this.availableYears = [];
+            for (const year in responseData.data) {
+                if (responseData.data.hasOwnProperty(year)) {
+                    this.availableYears.push(year);
+                    const responseYearData = responseData.data[year];
                     const data = [];
                     for (const k in responseYearData) {
                         if (responseYearData.hasOwnProperty(k)) {
                             const item = responseYearData[k];
-                            const col = (255 - item.total) - 50;
-                            item.fill = am4core.color('rgb(' + col + ', ' + col + ', ' + col + ')');
+                            const extremes = year === 'total'?responseData.totalExtremes:responseData.extremes;
+                            item.totalShading = this.shadingColor(extremes['maxTotal'], item.total);
+                            item.adultsShading = this.shadingColor(extremes['maxAdults'], item.adults);
+                            item.childrenShading = this.shadingColor(extremes['maxChildren'], item.children);
+                            item.maleShading = this.shadingColor(extremes['maxMale'], item.male);
+                            item.femaleShading = this.shadingColor(extremes['maxFemale'], item.female);
                             data.push(item);
                         }
                     }
-                    const yearSeries = {};//new MapPolygonSeries();
-                    yearSeries.data = data;
-                    // yearSeries.mapPolygons.template.propertyFields.fill = 'fill';
-                    // yearSeries.mapPolygons.template.tooltipText = '{name}: {total}';
-                    series[year] = yearSeries;
+                    series[year] = data;
                 }
             }
-            // this.$set(this.series, this.year, series);
             this.series = series;
-            console.log(this.series);
+            this.availableYears.sort().reverse();
             this.loading = false;
         },
-        // async loadMap() {
-        //     this.loading = true;
-        //     const responseData = (await this.callLoadData()).data[this.year];
-        //     const data = [];
-        //     for (const k in responseData) {
-        //         if (responseData.hasOwnProperty(k)) {
-        //             const item = responseData[k];
-        //             const col = (255 - item.total) - 50;
-        //             item.fill = am4core.color('rgb(' + col + ', ' + col + ', ' + col + ')');
-        //             data.push(item);
-        //         }
-        //     }
-        //     const series = new MapPolygonSeries();
-        //     series.data = data;
-        //     series.mapPolygons.template.propertyFields.fill = 'fill';
-        //     series.mapPolygons.template.tooltipText = '{name}: {total}';
-        //     this.$set(this.series, this.year, series);
-        //     this.loading = false;
-        //     console.log(this.series);
-        // },
+        shadingColor(extreme, value) {
+            const col = value === 0 ? 205 : (Math.floor(180 - ((180/extreme) * value)));
+            return am4core.color('rgb(' + col + ', ' + col + ', ' + col + ')');
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
     //@import '../assets/scss/variables';
+    form {
+        .uk-form-label {
+            width: 80px;
+        }
+        .uk-form-controls {
+            margin-left: 100px;
+        }
+        .uk-radio-controls {
+            padding-top: 7px;
+        }
+    }
 </style>
 
 
