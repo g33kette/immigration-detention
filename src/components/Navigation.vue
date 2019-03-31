@@ -20,10 +20,10 @@
                 <router-link to="/annual-trends" class="uk-height-1-1">Annual Trends</router-link>
             </li>
             <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                <router-link to="/analysis" class="uk-height-1-1">Geographical Trends</router-link>
+                <router-link to="/" class="uk-height-1-1">Geographical Trends</router-link>
             </li>
-            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                <router-link to="/analysis" class="uk-height-1-1">Detention Centres</router-link>
+            <li :class="{ 'uk-active': active==='detention-centres', 'uk-padding-small': true }">
+                <router-link to="/detention-centres" class="uk-height-1-1">Detention Centres</router-link>
             </li>
             <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
                 <router-link to="/analysis" class="uk-height-1-1">Prosecutions for <br>Immigration Offences</router-link>

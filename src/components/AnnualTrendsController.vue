@@ -249,7 +249,7 @@ export default {
     },
     methods: {
         callLoadData() {
-            return axios.get('/data/entering-leaving-detention.json');
+            return axios.get('/data/annual-trends.json');
         },
         async loadSeriesData() {
             this.loading = true;

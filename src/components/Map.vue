@@ -11,6 +11,7 @@
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4geodataWorldLow from '@amcharts/amcharts4-geodata/worldLow';
+import am4geodataUkLow from '@amcharts/amcharts4-geodata/ukLow';
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 am4core.useTheme(am4themesAnimated);
 export default {
@@ -20,6 +21,7 @@ export default {
         activeSeries: { required: true, type: [Number, String] },
         customTemplate: { required: false, type: Object, default: () => ({}) },
         hoverColor: { required: false, type: String, default: '#f89c2f' },
+        uk: { required: false, type: Boolean, default: false },
     },
     data() {
         return {
@@ -64,7 +66,11 @@ export default {
             map.zoomControl.slider.height = 100;
 
             // Set map definition
-            map.geodata = am4geodataWorldLow;
+            if (this.uk) {
+                map.geodata = am4geodataUkLow;
+            } else {
+                map.geodata = am4geodataWorldLow;
+            }
 
             // Set projection
             map.projection = new am4maps.projections.Miller();
@@ -81,7 +87,9 @@ export default {
             polygonSeries.data = data;
             map.series.push(polygonSeries);
             polygonSeries.useGeodata = true;
-            polygonSeries.exclude = ['AQ'];
+            if (!this.uk) {
+                polygonSeries.exclude = ['AQ'];
+            }
 
             const polygonTemplate = polygonSeries.mapPolygons.template;
             this.assignRecursively(polygonTemplate, this.customTemplate);
