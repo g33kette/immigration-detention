@@ -17,21 +17,28 @@ export default {
     props: {
         seriesData: { required: true, type: Array },
         series: { required: true, type: Array },
+        xAxisSettings: { required: true, type: Object },
+        colors: { required: false, type: Array, default: () => [] },
     },
     data() {
         return {
             chart: null,
-            colorsList: [
-                am4core.color('#f89c2f'),
+            defaultColorsList: [
                 am4core.color('#f18713'),
-                am4core.color('#ffc35c'),
-                am4core.color('#e7b978'),
                 am4core.color('#1c1c1c'),
-                am4core.color('#383838'),
+                am4core.color('#ffc35c'),
                 am4core.color('#606060'),
+                am4core.color('#f89c2f'),
+                am4core.color('#383838'),
+                am4core.color('#e7b978'),
                 am4core.color('#7b7b7b'),
             ],
         };
+    },
+    computed: {
+        colorsList() {
+            return this.colors.length?this.colors:this.defaultColorsList;
+        },
     },
     watch: {
         series() {
@@ -52,6 +59,11 @@ export default {
         },
         renderChart() {
             this.destroyChart();
+            if (this.series.length === 0) {
+                // Nothing to show
+                console.error('Cannot display chart, no series defined.');
+                return;
+            }
 
             const chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
 
@@ -59,20 +71,34 @@ export default {
 
             // Set Series Data
             chart.data = this.seriesData;
-            // console.log(this.seriesData);
+            // console.log('renderChart', this.seriesData);
 
-            chart.dateFormatter.inputDateFormat = 'yyyy';
-            const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-            dateAxis.renderer.minGridDistance = 60;
-            dateAxis.startLocation = 0.5;
-            dateAxis.endLocation = 0.5;
-            dateAxis.baseInterval = {
-                timeUnit: 'year',
-                count: 1,
-            };
+            let xAxis;
+            switch (this.xAxisSettings.type) {
+            case 'date':
+                chart.dateFormatter.inputDateFormat = 'yyyy';
+                xAxis = chart.xAxes.push(new am4charts.DateAxis());
+                xAxis.renderer.minGridDistance = 60;
+                xAxis.startLocation = 0.5;
+                xAxis.endLocation = 0.5;
+                xAxis.baseInterval = {
+                    timeUnit: 'year',
+                    count: 1,
+                };
+                break;
+            case 'category':
+                xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                xAxis.renderer.grid.template.location = 0;
+                xAxis.renderer.minGridDistance = 30;
+                xAxis.dataFields.category = this.xAxisSettings.category;
+                break;
+            default:
+                console.error('xAxisType not recognised.');
+                return;
+            }
 
             // Add value axis
-            chart.yAxes.push(new am4charts.ValueAxis());
+            const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
             // Add Series
             for (const addSeries of this.series) {
@@ -80,12 +106,22 @@ export default {
             }
 
             chart.cursor = new am4charts.XYCursor();
-            chart.cursor.xAxis = dateAxis;
-            // chart.scrollbarX = new am4core.Scrollbar();
+            chart.cursor.xAxis = xAxis;
+            valueAxis.cursorTooltipEnabled = false;
+            if (xAxis instanceof am4charts.CategoryAxis) {
+                chart.cursor.fullWidthLineX = true;
+                chart.cursor.lineX.strokeWidth = 0;
+                chart.cursor.lineX.fill = am4core.color('#0063cb');
+                chart.cursor.lineX.fillOpacity = 0.1;
+            }
+            chart.scrollbarX = new am4core.Scrollbar();
 
             // Add a legend
             chart.legend = new am4charts.Legend();
             chart.legend.position = 'bottom';
+
+            // Enable export
+            chart.exporting.menu = new am4core.ExportMenu();
 
             this.chart = chart;
             this.$emit('updated', { action: 'render' });

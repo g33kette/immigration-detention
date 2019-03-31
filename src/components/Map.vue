@@ -70,6 +70,9 @@ export default {
             map.projection = new am4maps.projections.Miller();
             this.addMapSeries(map, this.seriesData[this.activeSeries]);
 
+            // Enable export
+            map.exporting.menu = new am4core.ExportMenu();
+
             this.map = map;
             this.$emit('updated', { action: 'render' });
         },

@@ -6,31 +6,107 @@
         <div class="uk-card uk-card-default uk-padding uk-width-1-1">
             <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
-                UK Immigration Detention Annual Trends
-                <span class="uk-text-muted">{{ showNames[show] }}</span>
+                People
+                {{ showOnly !== 'leaving' && show !== 'resolution'?'Entering':'' }}
+                {{ showOnly === null && show !== 'resolution'?'&amp;':'' }}
+                {{ showOnly !== 'entering'?'Leaving':'' }}
+                UK Immigration Detention
+                <span class="uk-text-muted">{{ show === 'resolution'?'by Resolution':showNames[show] }}</span>
             </h3>
             <div class="uk-position-relative">
                 <loading v-if="rendering&&!loading" :opacity="0.5" />
                 <chart v-if="seriesData"
                        class="chart uk-height-large"
+                       :x-axis-settings="xAxisSettings"
                        :series="series"
                        :series-data="Object.values(seriesData)"
-                       @updated="chartUpdated"/>
+                       :colors="colors"
+                       @updated="chartUpdated" />
             </div>
             <div class="uk-margin-top">
-                <p class="uk-text-muted uk-margin-small">(Note: You can click on the legend above to show or hide data)</p>
-                <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
-                    Choose View:
-                </label>
-                <button v-for="(n,k) in showNames" :key="k"
-                        @click="show=k"
-                        :class="{
-                            'uk-button uk-button-small uk-margin uk-margin-left': true,
-                            'uk-button-default': show !== k,
-                            'uk-button-secondary': show === k,
-                        }">
-                    {{ n }}
-                </button>
+                <p class="uk-text-muted uk-margin-small">
+                    (Note: You can click on the legend above to show or hide data)
+                </p>
+                <div>
+                    <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
+                        Chart Type:
+                    </label>
+                    <button v-for="(n,k) in displayTypeOptions" :key="k"
+                            @click="displayType=k"
+                            :class="{
+                                'uk-button uk-button-small uk-margin uk-margin-left': true,
+                                'uk-button-default': displayType !== k,
+                                'uk-button-secondary': displayType === k,
+                            }">
+                        {{ n }}
+                    </button>
+                </div>
+                <div>
+                    <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
+                        Choose View:
+                    </label>
+                    <button v-for="(n,k) in showNames" :key="k"
+                            @click="show=k"
+                            :class="{
+                                'uk-button uk-button-small uk-margin uk-margin-left': true,
+                                'uk-button-default': show !== k,
+                                'uk-button-secondary': show === k,
+                            }"
+                            :disabled="k === 'resolution' && showOnly === 'entering'"
+                            :uk-tooltip="k === 'resolution' && showOnly === 'entering'?'This option is not available for your current selection.':false">
+                        {{ n }}
+                    </button>
+                </div>
+                <div>
+                    <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
+                        Show:
+                    </label>
+                    <button @click="showOnly=null"
+                            :class="{
+                                'uk-button uk-button-small uk-margin uk-margin-left': true,
+                                'uk-button-default': showOnly !== null,
+                                'uk-button-secondary': showOnly === null,
+                            }">
+                        All
+                    </button>
+                    <button @click="showOnly='entering'"
+                            :disabled="show === 'resolution'"
+                            :uk-tooltip="show === 'resolution'?'This option is not available for your current selection.':false"
+                            :class="{
+                                'uk-button uk-button-small uk-margin uk-margin-left': true,
+                                'uk-button-default': showOnly !== 'entering',
+                                'uk-button-secondary': showOnly === 'entering',
+                            }">
+                        Entering Only
+                    </button>
+                    <button @click="showOnly='leaving'"
+                            :class="{
+                                'uk-button uk-button-small uk-margin uk-margin-left': true,
+                                'uk-button-default': showOnly !== 'leaving',
+                                'uk-button-secondary': showOnly === 'leaving',
+                            }">
+                        Leaving Only
+                    </button>
+                    <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
+                        Display leaving as negative?:
+                    </label>
+                    <button @click="negateLeaveValues=false"
+                            :class="{
+                                'uk-button uk-button-small uk-margin uk-margin-left': true,
+                                'uk-button-default': negateLeaveValues !== false,
+                                'uk-button-secondary': negateLeaveValues === false,
+                            }">
+                        No
+                    </button>
+                    <button @click="negateLeaveValues=true"
+                            :class="{
+                                'uk-button uk-button-small uk-margin uk-margin-left': true,
+                                'uk-button-default': negateLeaveValues !== true,
+                                'uk-button-secondary': negateLeaveValues === true,
+                            }">
+                        Yes
+                    </button>
+                </div>
             </div>
             <div class="uk-margin">
                 <citation tag="detention-stats" class="uk-align-right" />
@@ -54,61 +130,113 @@ export default {
             loading: true,
             rendering: true,
             seriesData: null,
+            year: 2018,
             availableSeries: {
                 // totals
-                entering_total: { name: 'Total Entering', field: 'entering_total', negate: false },
-                leaving_total: { name: 'Total Leaving', field: 'leaving_total', negate: true },
+                entering_total: { name: 'Total Entering', field: 'entering_total' },
+                leaving_total: { name: 'Total Leaving', field: 'leaving_total' },
                 // gender
-                entering_total_m: { name: 'Entering - Male', field: 'entering_total_m', negate: false },
-                leaving_total_m: { name: 'Leaving - Male', field: 'leaving_total_m', negate: true },
-                entering_total_f: { name: 'Entering - Female', field: 'entering_total_f', negate: false },
-                leaving_total_f: { name: 'Leaving - Female', field: 'leaving_total_f', negate: true },
+                entering_male: { name: 'Male Entering', field: 'entering_male' },
+                entering_female: { name: 'Female Entering', field: 'entering_female' },
+                leaving_male: { name: 'Male Leaving', field: 'leaving_male' },
+                leaving_female: { name: 'Female Leaving', field: 'leaving_female' },
+                // resolution
+                leaving_returned: { name: 'Returned from UK', field: 'leaving_returned' },
+                leaving_remained: { name: 'Granted Leave to Remain', field: 'leaving_remained' },
+                leaving_bailed: { name: 'Bailed', field: 'leaving_bailed' },
+                leaving_reason_other: { name: 'Other', field: 'leaving_reason_other' },
+                // asylum
+                entering_asylum: { name: 'Entering Requested Asylum', field: 'entering_asylum' },
+                entering_non_asylum: { name: 'Entering Non-Asylum', field: 'entering_non_asylum' },
+                entering_adult_asylum: { name: 'Adult Entering Requested Asylum', field: 'entering_adult_asylum' },
+                entering_adult_non_asylum: { name: 'Adult Entering Non-Asylum', field: 'entering_adult_non_asylum' },
+                entering_child_asylum: { name: 'Child Entering Requested Asylum', field: 'entering_child_asylum' },
+                entering_child_non_asylum: { name: 'Child Entering Non-Asylum', field: 'entering_child_non_asylum' },
+                leaving_asylum: { name: 'Leaving Requested Asylum', field: 'leaving_asylum' },
+                leaving_non_asylum: { name: 'Leaving Non-Asylum', field: 'leaving_non_asylum' },
+                leaving_adult_asylum: { name: 'Adult Leaving Requested Asylum', field: 'leaving_adult_asylum' },
+                leaving_adult_non_asylum: { name: 'Adult Leaving Non-Asylum', field: 'leaving_adult_non_asylum' },
+                leaving_child_asylum: { name: 'Child Leaving Requested Asylum', field: 'leaving_child_asylum' },
+                leaving_child_non_asylum: { name: 'Child Leaving Non-Asylum', field: 'leaving_child_non_asylum' },
                 // age
-                entering_adults: { name: 'Entering - Adults', field: 'entering_adults', negate: false },
-                leaving_adults: { name: 'Leaving - Adults', field: 'leaving_adults', negate: true },
-                entering_children: { name: 'Entering - Children', field: 'entering_children', negate: false },
-                leaving_children: { name: 'Leaving - Children', field: 'leaving_children', negate: true },
-                // child breakdown
-                entering_5: { name: 'Entering - Under 5', field: 'entering_5', negate: false },
-                leaving_5: { name: 'Leaving - Under 5', field: 'leaving_5', negate: true },
-                entering_5_11: { name: 'Entering - Age 5 to 11', field: 'entering_5_11', negate: false },
-                leaving_5_11: { name: 'Leaving - Age 5 to 11', field: 'leaving_5_11', negate: true },
-                entering_12_16: { name: 'Entering - Age 12 to 16', field: 'entering_12_16', negate: false },
-                leaving_12_16: { name: 'Leaving - Age 12 to 16', field: 'leaving_12_16', negate: true },
-                entering_17: { name: 'Entering - Age 17', field: 'entering_17', negate: false },
-                leaving_17: { name: 'Leaving - Age 17', field: 'leaving_17', negate: true },
+                entering_child: { name: 'Children Entering', field: 'entering_child' },
+                entering_adult: { name: 'Adults Entering', field: 'entering_adult' },
+                leaving_child: { name: 'Children Leaving', field: 'leaving_child' },
+                leaving_adult: { name: 'Adults Leaving', field: 'leaving_adult' },
             },
             showOptions: {
                 totals: ['entering_total', 'leaving_total'],
-                gender: ['entering_total_m', 'leaving_total_m', 'entering_total_f', 'leaving_total_f'],
-                age: ['entering_adults', 'leaving_adults', 'entering_children', 'leaving_children'],
-                children: [
-                    'entering_5',
-                    'leaving_5',
-                    'entering_5_11',
-                    'leaving_5_11',
-                    'entering_12_16',
-                    'leaving_12_16',
-                    'entering_17',
-                    'leaving_17',
-                ],
-            },
-            showNames: {
-                totals: 'Total Detentions',
-                gender: 'By Gender',
-                age: 'By Age',
-                children: 'Detention of Minors',
+                gender: ['entering_male', 'leaving_male', 'entering_female', 'leaving_female'],
+                age: ['entering_adult', 'leaving_adult', 'entering_child', 'leaving_child'],
+                asylum: ['entering_asylum', 'leaving_asylum', 'entering_non_asylum', 'leaving_non_asylum'],
+                resolution: ['leaving_returned', 'leaving_remained', 'leaving_bailed', 'leaving_reason_other'],
             },
             show: 'totals',
+            showNames: {
+                totals: 'Overall Totals',
+                gender: 'By Gender',
+                age: 'By Age',
+                asylum: 'by Asylum Request',
+                resolution: 'Leaving Resolution',
+            },
+            displayType: 'bar',
+            displayTypeOptions: {
+                'bar': 'Bar Chart',
+                'bar-stacked': 'Stacked Bar Chart',
+                'line': 'Line Chart',
+                'line-stacked': 'Stacked Line Chart',
+            },
+            negateLeaveValues: false,
+            showOnly: null,
         };
     },
     computed: {
         series() {
             const series = [];
-            for (const addSeries of this.showOptions[this.show]) {
-                series.push(this.newLineSeries(this.availableSeries[addSeries]));
+            const showSeries = this.showOptions[this.show]
+                .filter((v) => !this.showOnly || v.indexOf(this.showOnly) >= 0);
+            for (const addSeries of showSeries) {
+                switch (this.displayType) {
+                case 'bar':
+                case 'bar-stacked':
+                    series.push(this.newBarSeries(this.availableSeries[addSeries]));
+                    break;
+                case 'line':
+                case 'line-stacked':
+                    series.push(this.newLineSeries(this.availableSeries[addSeries]));
+                    break;
+                }
             }
             return series;
+        },
+        xAxisSettings() {
+            switch (this.displayType) {
+            case 'bar':
+            case 'bar-stacked':
+                return { type: 'category', category: 'year' };
+            case 'line':
+            case 'line-stacked':
+                return { type: 'date' };
+            }
+            return null;
+        },
+        colors() {
+            if (this.show === 'resolution' || this.showOnly === 'leaving') {
+                return [
+                    am4core.color('#1c1c1c'),
+                    am4core.color('#606060'),
+                    am4core.color('#383838'),
+                    am4core.color('#7b7b7b'),
+                ];
+            } else if (this.showOnly === 'entering') {
+                return [
+                    am4core.color('#f18713'),
+                    am4core.color('#ffc35c'),
+                    am4core.color('#f89c2f'),
+                    am4core.color('#e7b978'),
+                ];
+            }
+            return undefined;
         },
     },
     watch: {
@@ -121,7 +249,7 @@ export default {
     },
     methods: {
         callLoadData() {
-            return axios.get('/data/annual-trends.json');
+            return axios.get('/data/entering-leaving-detention.json');
         },
         async loadSeriesData() {
             this.loading = true;
@@ -129,16 +257,48 @@ export default {
             this.seriesData = responseData.data;
             this.loading = false;
         },
-        newLineSeries({ name, field, negate }) {
+        newBarSeries({ name, field }) {
+            const series = new am4charts.ColumnSeries();
+            series.dataFields.valueY = field;
+            series.dataFields.categoryX = 'year';
+            series.name = name;
+            series.columns.template.tooltipText = '{name}: [bold]{valueY}[/]';
+            series.columns.template.fillOpacity = .8;
+            series.cursorTooltipEnabled = false;
+            series.sequencedInterpolation = true;
+            if (this.displayType === 'bar-stacked') {
+                series.stacked = true;
+            }
+            if (this.negateLeaveValues && field.indexOf('leaving_') === 0) {
+                series.adapter.add('dataContextValue', function(dataItem) {
+                    if (dataItem.field === 'valueY') dataItem.value = -dataItem.value;
+                    return dataItem;
+                });
+            }
+            const columnTemplate = series.columns.template;
+            columnTemplate.strokeWidth = 2;
+            columnTemplate.strokeOpacity = 1;
+            return series;
+        },
+        newLineSeries({ name, field }) {
             const lineSeries = new am4charts.LineSeries();
             lineSeries.name = name;
             lineSeries.dataFields.dateX = 'year';
             lineSeries.dataFields.valueY = field;
-            lineSeries.tooltipText = negate?'{valueY.value}':'{valueY.value}'; // todo negate
+            lineSeries.tooltipText = '{name}: [bold]{valueY}[/]';
             lineSeries.sequencedInterpolation = true;
-            lineSeries.fillOpacity = 0.6;
-            lineSeries.stacked = true;
+            if (this.displayType === 'line-stacked') {
+                lineSeries.fillOpacity = 0.6;
+                lineSeries.stacked = true;
+            }
+            if (this.negateLeaveValues && field.indexOf('leaving_') === 0) {
+                lineSeries.adapter.add('dataContextValue', function(dataItem) {
+                    if (dataItem.field === 'valueY') dataItem.value = -dataItem.value;
+                    return dataItem;
+                });
+            }
             lineSeries.strokeWidth = 2;
+            lineSeries.strokeOpacity = 1;
             return lineSeries;
         },
         chartUpdated({ action }) {
@@ -147,33 +307,6 @@ export default {
         },
     },
 };
-
-
-// // axis ranges
-// const range = dateAxis.axisRanges.create();
-// range.date = new Date(2010, 1, 1);
-// range.endDate = new Date(2018, 1, 1);
-// range.axisFill.fill = chart.colors.getIndex(7);
-// range.axisFill.fillOpacity = 0.2;
-//
-// range.label.text = 'Fines for speeding increased';
-// range.label.inside = true;
-// range.label.rotation = 90;
-// range.label.horizontalCenter = 'right';
-// range.label.verticalCenter = 'bottom';
-//
-// let range2 = dateAxis.axisRanges.create();
-// range2.date = new Date(2007, 1, 1);
-// range2.grid.stroke = chart.colors.getIndex(7);
-// range2.grid.strokeOpacity = 0.6;
-// range2.grid.strokeDasharray = '5,2';
-//
-//
-// range2.label.text = 'Motorcycle fee introduced';
-// range2.label.inside = true;
-// range2.label.rotation = 90;
-// range2.label.horizontalCenter = 'right';
-// range2.label.verticalCenter = 'bottom';
 </script>
 
 <style lang="scss" scoped>
