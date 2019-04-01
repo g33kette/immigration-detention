@@ -17,21 +17,42 @@ am4core.useTheme(am4themesAnimated);
 export default {
     name: 'Map',
     props: {
-        // seriesData: { required: true, type: Object },
-        // activeSeries: { required: true, type: [Number, String] },
+        seriesData: { required: true, type: Object },
+        activeSeries: { required: true, type: [Number, String] },
         // customTemplate: { required: false, type: Object, default: () => ({}) },
-        // hoverColor: { required: false, type: String, default: '#f89c2f' },
+        hoverColor: { required: false, type: String, default: '#f89c2f' },
         uk: { required: false, type: Boolean, default: false },
+        showZoomControls: { required: false, type: Boolean, default: true },
+        showExportControls: { required: false, type: Boolean, default: true },
+        colors: { required: false, type: Array, default: () => [] },
     },
     data() {
         return {
             map: null,
+            defaultColorsList: [
+                am4core.color('#f18713'),
+                am4core.color('#1c1c1c'),
+                am4core.color('#ffc35c'),
+                am4core.color('#606060'),
+                am4core.color('#f89c2f'),
+                am4core.color('#383838'),
+                am4core.color('#e7b978'),
+                am4core.color('#7b7b7b'),
+            ],
         };
     },
+    computed: {
+        colorsList() {
+            return this.colors.length?this.colors:this.defaultColorsList;
+        },
+    },
     watch: {
-        // activeSeries() {
-        //     this.redrawMap();
-        // },
+        activeSeries() {
+            this.redrawMap();
+        },
+        seriesData() {
+            this.redrawMap();
+        },
         // customTemplate() {
         //     this.redrawMap();
         // },
@@ -62,8 +83,10 @@ export default {
             map.background.fillOpacity = 1;
 
             // Add zoom controls
-            map.zoomControl = new am4maps.ZoomControl();
-            map.zoomControl.slider.height = 100;
+            if (this.showZoomControls) {
+                map.zoomControl = new am4maps.ZoomControl();
+                map.zoomControl.slider.height = 100;
+            }
 
             // Set map definition
             if (this.uk) {
@@ -80,11 +103,12 @@ export default {
             if (!this.uk) {
                 polygonSeries.exclude = ['AQ'];
             }
-            this.addMapPoints(map);
-            // this.addMapSeries(map, this.seriesData[this.activeSeries]);
+            this.addMapPoints(map, this.seriesData[this.activeSeries]);
 
             // Enable export
-            map.exporting.menu = new am4core.ExportMenu();
+            if (this.showExportControls) {
+                map.exporting.menu = new am4core.ExportMenu();
+            }
 
             this.map = map;
             this.$emit('updated', { action: 'render' });
@@ -94,7 +118,7 @@ export default {
             const imageSeriesTemplate = imageSeries.mapImages.template;
             const circle = imageSeriesTemplate.createChild(am4core.Circle);
             circle.radius = 4;
-            circle.fill = am4core.color('#B27799');
+            circle.fill = this.colorsList[map.series.length-2];
             circle.stroke = am4core.color('#FFFFFF');
             circle.strokeWidth = 2;
             circle.nonScaling = true;
@@ -102,19 +126,7 @@ export default {
             imageSeriesTemplate.propertyFields.latitude = 'latitude';
             imageSeriesTemplate.propertyFields.longitude = 'longitude';
 
-            imageSeries.data = [{
-                'latitude': 52.195672,
-                'longitude': -0.485438,
-                'title': 'Yarls Wood',
-            }, {
-                'latitude': 53.167853,
-                'longitude': -0.689226,
-                'title': 'Morton Hall',
-            }, {
-                'latitude': 51.117944,
-                'longitude': 1.296038,
-                'title': 'Dover IRC',
-            }];
+            imageSeries.data = data;
 
             return imageSeries;
         },
@@ -147,20 +159,21 @@ export default {
         //     }
         //     return target;
         // },
-        // redrawMap() {
-        //     if (!this.map) {
-        //         this.renderMap();
-        //         return;
-        //     }
-        //     const polygonSeries = this.addMapSeries(this.map, this.seriesData[this.activeSeries]);
-        //     polygonSeries.events.on('ready', () => {
-        //         setTimeout(() => {
-        //             this.map.series.shift();
-        //         }, 500);
-        //         this.$emit('updated', { action: 'update' });
-        //     });
-        //     this.map.validateData();
-        // },
+        redrawMap() {
+            if (!this.map) {
+                this.renderMap();
+                return;
+            }
+            this.map.series.pop();
+            const polygonSeries = this.addMapPoints(this.map, this.seriesData[this.activeSeries]);
+            // polygonSeries.events.on('ready', () => {
+            //     setTimeout(() => {
+            //         this.map.series.splice(1, 1);
+            //     }, 500);
+                this.$emit('updated', { action: 'update' });
+            // });
+            this.map.validateData();
+        },
     },
 };
 </script>
