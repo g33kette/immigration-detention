@@ -17,16 +17,16 @@
             </li>
             <li :class="{ 'uk-active': active==='annual-trends', 'uk-padding-small': true }">
                 <router-link to="/annual-trends" class="uk-height-1-1">
-                    Annual Trends
+                    People Entering &amp; <br> Leaving Detention
+                </router-link>
+            </li>
+            <li :class="{ 'uk-active': active==='people-in-detention', 'uk-padding-small': true }">
+                <router-link to="/people-in-detention" class="uk-height-1-1">
+                    People In Detention
                 </router-link>
             </li>
             <li :class="{ 'uk-active': active==='detention-centres', 'uk-padding-small': true }">
                 <router-link to="/detention-centres" class="uk-height-1-1">Detention Centres</router-link>
-            </li>
-            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                <router-link to="/analysis" class="uk-height-1-1">
-                    Detention Lengths <br> &amp; Locations
-                </router-link>
             </li>
             <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
                 <router-link to="/analysis" class="uk-height-1-1">
