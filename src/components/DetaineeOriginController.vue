@@ -6,7 +6,7 @@
         <div class="uk-card uk-card-default uk-padding uk-width-1-1">
             <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
-                Origin of UK Immigration Detainees
+                Origin of Detainees Entering UK Immigration Detention
                 <span class="uk-text-muted">{{ year==='total'?'All Available Years':year }}</span>
             </h3>
             <div class="uk-position-relative">
@@ -20,8 +20,8 @@
             </div>
             <div class="legend uk-align-right uk-text-small">
                 <div class="legend-gradient" />
-                <span class="uk-align-left">Low {{ lowValue }}</span>
-                <span class="uk-align-right">High  {{ highValue }}</span>
+                <span class="uk-align-left">Low {{ lowValue | numberFormat }}</span>
+                <span class="uk-align-right">High  {{ highValue | numberFormat }}</span>
             </div>
             <form class="uk-form-horizontal uk-margin-large-top" @submit.prevent>
                 <div uk-grid>
@@ -102,6 +102,12 @@ import axios from 'axios';
 export default {
     name: 'DetaineeOriginController',
     components: { 'loading': LoadingCover, 'map-chart': Map, 'citation': Citation },
+    filters: {
+        numberFormat: function(value) {
+            if (isNaN(parseInt(value))) return value;
+            return (new Intl.NumberFormat('en-GB', {})).format(value);
+        },
+    },
     data() {
         return {
             loading: true,

@@ -10,23 +10,28 @@
             <!-- Overview -->
             <li :class="{ 'uk-active': active==='index', 'uk-padding-small  uk-box-shadow-medium': true }">
                 <router-link to="/" class="uk-height-1-1">Overview</router-link>
-                <!--<div class="arrow-right"></div>-->
             </li>
             <!-- Further Analysis -->
             <li :class="{ 'uk-active': active==='detainee-origin', 'uk-padding-small': true }">
                 <router-link to="/detainee-origin" class="uk-height-1-1">Origin of Detainees</router-link>
             </li>
             <li :class="{ 'uk-active': active==='annual-trends', 'uk-padding-small': true }">
-                <router-link to="/annual-trends" class="uk-height-1-1">Annual Trends</router-link>
-            </li>
-            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                <router-link to="/" class="uk-height-1-1">Geographical Trends</router-link>
+                <router-link to="/annual-trends" class="uk-height-1-1">
+                    Annual Trends
+                </router-link>
             </li>
             <li :class="{ 'uk-active': active==='detention-centres', 'uk-padding-small': true }">
                 <router-link to="/detention-centres" class="uk-height-1-1">Detention Centres</router-link>
             </li>
             <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                <router-link to="/analysis" class="uk-height-1-1">Prosecutions for <br>Immigration Offences</router-link>
+                <router-link to="/analysis" class="uk-height-1-1">
+                    Detention Lengths <br> &amp; Locations
+                </router-link>
+            </li>
+            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
+                <router-link to="/analysis" class="uk-height-1-1">
+                    Prosecutions for <br>Immigration Offences
+                </router-link>
             </li>
             <!-- References -->
             <li :class="{ 'uk-active': active==='references', 'uk-padding-small': true }">

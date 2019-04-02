@@ -104,8 +104,8 @@ export default {
     components: { Citation },
     data() {
         return {
-            men: 21069,
-            women: 3616,
+            men: 21107,
+            women: 3641,
             children: 63,
         };
     },
