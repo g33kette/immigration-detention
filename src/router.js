@@ -20,7 +20,7 @@ const routes = [
     { path: '/detainee-origin', name: 'detainee-origin', component: DetaineeOriginController },
     { path: '/annual-trends', name: 'annual-trends', component: AnnualTrendsController },
     { path: '/detention-centres', name: 'detention-centres', component: DetentionCentresController },
-    { path: '/people-in-detention', name: 'active-detentions', component: PeopleInDetentionController },
+    { path: '/people-in-detention', name: 'people-in-detention', component: PeopleInDetentionController },
     { path: '/references/:id?', name: 'references', component: ReferencesController },
 ];
 

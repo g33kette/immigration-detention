@@ -76,15 +76,14 @@ export default {
             let xAxis;
             switch (this.xAxisSettings.type) {
             case 'date':
-                chart.dateFormatter.inputDateFormat = 'yyyy';
+                chart.dateFormatter.inputDateFormat = this.xAxisSettings.dateFormat?this.xAxisSettings.dateFormat
+                    :'yyyy';
                 xAxis = chart.xAxes.push(new am4charts.DateAxis());
                 xAxis.renderer.minGridDistance = 60;
                 xAxis.startLocation = 0.5;
                 xAxis.endLocation = 0.5;
-                xAxis.baseInterval = {
-                    timeUnit: 'year',
-                    count: 1,
-                };
+                xAxis.baseInterval = this.xAxisSettings.baseInterval?this.xAxisSettings.baseInterval
+                    :{ timeUnit: 'year', count: 1 };
                 break;
             case 'category':
                 xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
@@ -102,7 +101,7 @@ export default {
 
             // Add Series
             for (const addSeries of this.series) {
-                chart.series.push(addSeries);
+                const series = chart.series.push(addSeries);
             }
 
             chart.cursor = new am4charts.XYCursor();
@@ -125,6 +124,9 @@ export default {
 
             this.chart = chart;
             this.$emit('updated', { action: 'render' });
+            this.chart.events.on('ready', () => {
+                this.$emit('rendered', { action: 'render' });
+            });
         },
     },
 };

@@ -262,10 +262,12 @@ export default {
             series.dataFields.valueY = field;
             series.dataFields.categoryX = 'year';
             series.name = name;
-            series.columns.template.tooltipText = '{name}: [bold]{valueY}[/]';
+            series.tooltipText = '{name}: [bold]{valueY}[/]';
+            // series.columns.template.tooltipText = '{name}: [bold]{valueY}[/]';
             series.columns.template.fillOpacity = .8;
-            series.cursorTooltipEnabled = false;
-            series.sequencedInterpolation = true;
+            series.cursorTooltipEnabled = true;
+            series.sequencedInterpolation = false;
+            series.legendSettings.valueText = '{valueY}';
             if (this.displayType === 'bar-stacked') {
                 series.stacked = true;
             }
@@ -281,25 +283,26 @@ export default {
             return series;
         },
         newLineSeries({ name, field }) {
-            const lineSeries = new am4charts.LineSeries();
-            lineSeries.name = name;
-            lineSeries.dataFields.dateX = 'year';
-            lineSeries.dataFields.valueY = field;
-            lineSeries.tooltipText = '{name}: [bold]{valueY}[/]';
-            lineSeries.sequencedInterpolation = true;
+            const series = new am4charts.LineSeries();
+            series.name = name;
+            series.dataFields.dateX = 'year';
+            series.dataFields.valueY = field;
+            series.tooltipText = '{name}: [bold]{valueY}[/]';
+            series.sequencedInterpolation = false;
+            series.legendSettings.valueText = '{valueY}';
             if (this.displayType === 'line-stacked') {
-                lineSeries.fillOpacity = 0.6;
-                lineSeries.stacked = true;
+                series.fillOpacity = 0.6;
+                series.stacked = true;
             }
             if (this.negateLeaveValues && field.indexOf('leaving_') === 0) {
-                lineSeries.adapter.add('dataContextValue', function(dataItem) {
+                series.adapter.add('dataContextValue', function(dataItem) {
                     if (dataItem.field === 'valueY') dataItem.value = -dataItem.value;
                     return dataItem;
                 });
             }
-            lineSeries.strokeWidth = 2;
-            lineSeries.strokeOpacity = 1;
-            return lineSeries;
+            series.strokeWidth = 2;
+            series.strokeOpacity = 1;
+            return series;
         },
         chartUpdated({ action }) {
             // console.log('updated', action);
