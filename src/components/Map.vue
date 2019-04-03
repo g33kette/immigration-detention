@@ -22,6 +22,10 @@ export default {
         customTemplate: { required: false, type: Object, default: () => ({}) },
         hoverColor: { required: false, type: String, default: '#f89c2f' },
         uk: { required: false, type: Boolean, default: false },
+        eu: { required: false, type: Boolean, default: false },
+        showZoomControls: { required: false, type: Boolean, default: true },
+        showExportControls: { required: false, type: Boolean, default: false },
+        showBackground: { required: false, type: Boolean, default: true },
     },
     data() {
         return {
@@ -59,11 +63,13 @@ export default {
             // Change background color
             // map.background.fill = am4core.color('#f8e7d9');
             map.background.fill = am4core.color('#ffffff');
-            map.background.fillOpacity = 1;
+            map.background.fillOpacity = this.showBackground?1:0;
 
             // Add zoom controls
-            map.zoomControl = new am4maps.ZoomControl();
-            map.zoomControl.slider.height = 100;
+            if (this.showZoomControls) {
+                map.zoomControl = new am4maps.ZoomControl();
+                map.zoomControl.slider.height = 100;
+            }
 
             // Set map definition
             if (this.uk) {
@@ -77,7 +83,9 @@ export default {
             this.addMapSeries(map, this.seriesData[this.activeSeries]);
 
             // Enable export
-            map.exporting.menu = new am4core.ExportMenu();
+            if (this.showExportControls) {
+                map.exporting.menu = new am4core.ExportMenu();
+            }
 
             this.map = map;
             this.$emit('updated', { action: 'render' });
@@ -87,7 +95,38 @@ export default {
             polygonSeries.data = data;
             map.series.push(polygonSeries);
             polygonSeries.useGeodata = true;
-            if (!this.uk) {
+            if (this.eu) {
+                polygonSeries.include = [
+                    'BE',
+                    'EL',
+                    'LT',
+                    'PT',
+                    'BG',
+                    'ES',
+                    'LU',
+                    'RO',
+                    'CZ',
+                    'FR',
+                    'HU',
+                    'SI',
+                    'DK',
+                    'HR',
+                    'MT',
+                    'SK',
+                    'DE',
+                    'IT',
+                    'NL',
+                    'FI',
+                    'EE',
+                    'CY',
+                    'AT',
+                    'SE',
+                    'IE',
+                    'LV',
+                    'PL',
+                    'GB',
+                ];
+            } else if (!this.uk) {
                 polygonSeries.exclude = ['AQ'];
             }
 

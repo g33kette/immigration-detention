@@ -39,6 +39,15 @@ export default new Vuex.Store({
                 datePublished: '03 Jul 2018',
                 dateAccessed: '01 Feb 2019',
             },
+            {
+                key: 'eu-directive',
+                citation: 'EU Directive 2008/115/EC',
+                title: 'Directive 2008/115/EC of the European Parliament and of the Council of 16 December 2008 on common standards and procedures in Member States for returning illegally staying third-country nationals',
+                author: 'The European Parliament',
+                link: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex:32008L0115',
+                datePublished: '16 Dec 2008',
+                dateAccessed: '31 Jan 2019',
+            },
         ],
     },
     getters: {

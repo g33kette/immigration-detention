@@ -6,7 +6,7 @@
         <div class="uk-card uk-card-default uk-padding uk-width-1-1">
             <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
-                UK Immigration Detentions
+                People In UK Immigration Detention
                 <span class="uk-text-muted">{{ showNames[show] }}</span>
             </h3>
             <div class="uk-position-relative">

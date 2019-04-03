@@ -28,9 +28,9 @@
             <li :class="{ 'uk-active': active==='detention-centres', 'uk-padding-small': true }">
                 <router-link to="/detention-centres" class="uk-height-1-1">Detention Centres</router-link>
             </li>
-            <li :class="{ 'uk-active': active==='todo', 'uk-padding-small': true }">
-                <router-link to="/analysis" class="uk-height-1-1">
-                    Prosecutions for <br>Immigration Offences
+            <li :class="{ 'uk-active': active==='detention-lengths', 'uk-padding-small': true }">
+                <router-link to="/detention-lengths" class="uk-height-1-1">
+                    Detention Lengths
                 </router-link>
             </li>
             <!-- References -->

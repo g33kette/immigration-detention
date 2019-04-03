@@ -23,7 +23,7 @@ export default {
         hoverColor: { required: false, type: String, default: '#f89c2f' },
         uk: { required: false, type: Boolean, default: false },
         showZoomControls: { required: false, type: Boolean, default: true },
-        showExportControls: { required: false, type: Boolean, default: true },
+        showExportControls: { required: false, type: Boolean, default: false },
         colors: { required: false, type: Array, default: () => [] },
     },
     data() {

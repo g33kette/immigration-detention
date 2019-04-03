@@ -19,6 +19,7 @@ export default {
         series: { required: true, type: Array },
         xAxisSettings: { required: true, type: Object },
         colors: { required: false, type: Array, default: () => [] },
+        showExportControls: { required: false, type: Boolean, default: false },
     },
     data() {
         return {
@@ -120,7 +121,9 @@ export default {
             chart.legend.position = 'bottom';
 
             // Enable export
-            chart.exporting.menu = new am4core.ExportMenu();
+            if (this.showExportControls) {
+                chart.exporting.menu = new am4core.ExportMenu();
+            }
 
             this.chart = chart;
             this.$emit('updated', { action: 'render' });

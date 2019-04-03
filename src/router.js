@@ -8,6 +8,7 @@ import AnnualTrendsController from './components/AnnualTrendsController';
 import ReferencesController from './components/ReferencesController';
 import DetentionCentresController from './components/DetentionCentresController';
 import PeopleInDetentionController from './components/PeopleInDetentionController';
+import DetentionLengthsController from './components/DetentionLengthsController';
 
 /**
  * Defined routes within the application
@@ -21,6 +22,7 @@ const routes = [
     { path: '/annual-trends', name: 'annual-trends', component: AnnualTrendsController },
     { path: '/detention-centres', name: 'detention-centres', component: DetentionCentresController },
     { path: '/people-in-detention', name: 'people-in-detention', component: PeopleInDetentionController },
+    { path: '/detention-lengths', name: 'detention-lengths', component: DetentionLengthsController },
     { path: '/references/:id?', name: 'references', component: ReferencesController },
 ];
 

@@ -3,7 +3,7 @@
  https://migrationobservatory.ox.ac.uk/resources/briefings/immigration-detention-in-the-uk/
 -->
 <template>
-    <div class="component-detainee-origin-controller uk-container">
+    <div class="component-detention-centres-controller uk-container">
         <div class="uk-card uk-card-default uk-padding uk-width-1-1">
             <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
@@ -11,7 +11,7 @@
                 <span class="uk-text-muted">{{ year==='total'?'All Available Years':year }}</span>
             </h3>
             <div uk-grid v-if="centresSeries">
-                <div class="uk-width-1-3 uk-height-1-1 uk-overflow-auto uk-height-large">
+                <div class="uk-width-medium uk-height-large uk-overflow-auto">
                     <table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-position-relative">
                         <thead>
                             <tr>
@@ -40,7 +40,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="uk-width-1-3">
+                <div class="uk-width-large">
                     <div class="uk-position-relative">
                         <loading v-if="rendering&&!loading" :opacity="0.5" />
                         <div :class="{
@@ -64,7 +64,7 @@
                                          @updated="mapUpdated" />
                     </div>
                 </div>
-                <div class="uk-width-1-3 uk-height-1-1 uk-overflow-auto uk-height-large">
+                <div class="uk-width-expand@l uk-width-1-1 uk-height-large uk-overflow-auto">
                     <div v-if="selectedCentre===null">
                         <h3 class="uk-h3 uk-margin-small">IRC</h3>
                         <h4 class="uk-h4 uk-text-secondary uk-margin-small">Immigration Removal Centre</h4>
