@@ -17,7 +17,8 @@ export default new Vuex.Store({
                 citation: 'UK Home Office',
                 title: 'User Guide to Home Office Immigration Statistics',
                 author: 'UK Home Office',
-                link: 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/781065/user-guide-immigration-statistics.pdf',
+                link: 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/' +
+                    'file/781065/user-guide-immigration-statistics.pdf',
                 datePublished: '28 Feb 2013',
                 dateAccessed: '28 Mar 2019',
             },
@@ -26,7 +27,8 @@ export default new Vuex.Store({
                 citation: 'UK Home Office Immigration Detention Data Tables 2018',
                 title: 'Detention data tables immigration statistics year ending December 2018',
                 author: 'UK Home Office',
-                link: 'https://www.gov.uk/government/statistics/immigration-statistics-year-ending-december-2018-data-tables',
+                link: 'https://www.gov.uk/government/statistics/' +
+                    'immigration-statistics-year-ending-december-2018-data-tables',
                 datePublished: '28 Feb 2019',
                 dateAccessed: '28 Mar 2019',
             },
@@ -42,7 +44,9 @@ export default new Vuex.Store({
             {
                 key: 'eu-directive',
                 citation: 'EU Directive 2008/115/EC',
-                title: 'Directive 2008/115/EC of the European Parliament and of the Council of 16 December 2008 on common standards and procedures in Member States for returning illegally staying third-country nationals',
+                title: 'Directive 2008/115/EC of the European Parliament and of the Council of 16 December 2008 on ' +
+                    'common standards and procedures in Member States for returning illegally staying third-country ' +
+                    'nationals',
                 author: 'The European Parliament',
                 link: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex:32008L0115',
                 datePublished: '16 Dec 2008',

@@ -130,48 +130,14 @@ export default {
 
             return imageSeries;
         },
-        // addMapSeries(map, data) {
-        //     const polygonSeries = new am4maps.MapPolygonSeries();
-        //     polygonSeries.data = data;
-        //     map.series.push(polygonSeries);
-        //     polygonSeries.useGeodata = true;
-        //     if (!this.uk) {
-        //         polygonSeries.exclude = ['AQ'];
-        //     }
-        //
-        //     const polygonTemplate = polygonSeries.mapPolygons.template;
-        //     this.assignRecursively(polygonTemplate, this.customTemplate);
-        //
-        //     // Hover state
-        //     const hs = polygonTemplate.states.create('hover');
-        //     hs.properties.fill = am4core.color(this.hoverColor);
-        //     return polygonSeries;
-        // },
-        // assignRecursively(target, map) {
-        //     for (const k in map) {
-        //         if (map.hasOwnProperty(k)) {
-        //             if (typeof map[k] === 'object') {
-        //                 target[k] = this.assignRecursively(target[k], map[k]);
-        //             } else {
-        //                 target[k] = map[k];
-        //             }
-        //         }
-        //     }
-        //     return target;
-        // },
         redrawMap() {
             if (!this.map) {
                 this.renderMap();
                 return;
             }
             this.map.series.pop();
-            const polygonSeries = this.addMapPoints(this.map, this.seriesData[this.activeSeries]);
-            // polygonSeries.events.on('ready', () => {
-            //     setTimeout(() => {
-            //         this.map.series.splice(1, 1);
-            //     }, 500);
-                this.$emit('updated', { action: 'update' });
-            // });
+            this.addMapPoints(this.map, this.seriesData[this.activeSeries]);
+            this.$emit('updated', { action: 'update' });
             this.map.validateData();
         },
     },

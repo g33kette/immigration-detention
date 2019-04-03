@@ -54,27 +54,30 @@ been available for these individuals since March 2006.
                     <citation tag="detention-stats" class="uk-align-right" />
                 </div>
             </div>
-
         </div>
 
         <div class="uk-card uk-card-default uk-padding uk-width-1-1 uk-margin-top">
             <div uk-grid>
-            <div class="uk-width-1-5">
-            <img src="../assets/images/homeofficelogo.png" class="" alt="UK Home Office Logo" />
+                <div class="uk-width-1-5">
+                    <img src="../assets/images/homeofficelogo.png" class="" alt="UK Home Office Logo">
+                </div>
+                <div class="uk-width-4-5">
+                    <p class="uk-text-medium">
+                        "Published detention figures relate only to those
+                        <span class="uk-text-bold uk-text-secondary">
+                            detained solely under Immigration Act powers,
+                        </span> in immigration removal centres, short
+                        term holding facilities, pre departure accommodation and H M Prisons, and exclude those detained
+                        for criminal purposes and those who are detained under both criminal and immigration powers."
+                    </p>
+                    <p>
+                        "The Home Office has a statutory duty to review detention at
+                        least every 28 days to ensure that the detained person continues to meet the published detention
+                        criteria and that detention is still the most appropriate course."
+                    </p>
+                    <p class="uk-text-right"><citation tag="detention-stats-guide" /></p>
+                </div>
             </div>
-            <div class="uk-width-4-5">
-            <p class="uk-text-medium">
-            "Published detention figures relate only to those <span class="uk-text-bold uk-text-secondary">detained solely under Immigration Act powers</span>, in
-            immigration removal centres, short term holding facilities, pre departure accommodation and H M
-            Prisons, and exclude those detained for criminal purposes and those who are detained under both
-            criminal and immigration powers."
-            </p>
-            <p>"The Home Office has a statutory duty to review detention at
-                least every 28 days to ensure that the detained person continues to meet the published detention
-                criteria and that detention is still the most appropriate course."</p>
-            <p class="uk-text-right"><citation tag="detention-stats-guide" /></p>
-            </div>
-        </div>
         </div>
     </div>
 </template>

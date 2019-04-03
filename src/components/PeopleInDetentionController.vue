@@ -27,12 +27,12 @@
                         Chart Type:
                     </label>
                     <button v-for="(n,k) in displayTypeOptions" :key="k"
-                            @click="displayType=k"
                             :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': displayType !== k,
                                 'uk-button-secondary': displayType === k,
-                            }">
+                            }"
+                            @click="displayType=k">
                         {{ n }}
                     </button>
                 </div>
@@ -41,12 +41,12 @@
                         Choose View:
                     </label>
                     <button v-for="(n,k) in showNames" :key="k"
-                            @click="show=k"
                             :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': show !== k,
                                 'uk-button-secondary': show === k,
-                            }">
+                            }"
+                            @click="show=k">
                         {{ n }}
                     </button>
                 </div>

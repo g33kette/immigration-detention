@@ -9,7 +9,7 @@
                  'uk-background-primary': day%365!==0,
                  'uk-background-secondary':day%365===0,
              }"
-             :uk-tooltip="day%365===0?yearsText(day):null"/>
+             :uk-tooltip="day%365===0?yearsText(day):null" />
         <span class="uk-text-bold uk-text-secondary uk-text-large">{{ count | numberFormat }} days</span>
         <button v-if="count<days"
                 class="uk-button-small uk-button-default uk-display-block uk-pointer uk-text-muted"
@@ -22,14 +22,14 @@
 <script>
 export default {
     name: 'DetentionLengthsDisplay',
-    props: {
-        days: { required: true, type: Number },
-    },
     filters: {
         numberFormat: function(value) {
             if (isNaN(parseInt(value))) return value;
             return (new Intl.NumberFormat('en-GB', {})).format(value);
         },
+    },
+    props: {
+        days: { required: true, type: Number },
     },
     data() {
         return {

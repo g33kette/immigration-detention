@@ -102,7 +102,7 @@ export default {
 
             // Add Series
             for (const addSeries of this.series) {
-                const series = chart.series.push(addSeries);
+                chart.series.push(addSeries);
             }
 
             chart.cursor = new am4charts.XYCursor();

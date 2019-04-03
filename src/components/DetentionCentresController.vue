@@ -10,17 +10,20 @@
                 UK Immigration Detention Centres
                 <span class="uk-text-muted">{{ year==='total'?'All Available Years':year }}</span>
             </h3>
-            <div uk-grid v-if="centresSeries">
+            <div v-if="centresSeries" uk-grid>
                 <div class="uk-width-medium uk-height-large uk-overflow-auto">
                     <table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-position-relative">
                         <thead>
                             <tr>
                                 <th>
                                     <p class="uk-align-left uk-margin-small">Detention Centres</p>
-                                    <button class="uk-button-default uk-button-small uk-align-right uk-margin-remove uk-pointer"
-                                            v-show="selectedCentre!==null"
-                                            @click="selectedCentre=null"
-                                            uk-tooltip="Click to Reset">
+                                    <button v-show="selectedCentre!==null"
+                                            uk-tooltip="Click to Reset"
+                                            :class="{
+                                                'uk-button-default uk-button-small uk-align-right': true,
+                                                'uk-margin-remove uk-pointer': true,
+                                            }"
+                                            @click="selectedCentre=null">
                                         <font-awesome-icon icon="undo" />
                                     </button>
                                 </th>
@@ -44,12 +47,15 @@
                     <div class="uk-position-relative">
                         <loading v-if="rendering&&!loading" :opacity="0.5" />
                         <div :class="{
-                            'uk-position-z-index uk-card uk-card-small uk-card-default uk-position-absolute uk-padding-small uk-box-shadow-large uk-margin-top': true,
+                            'uk-position-z-index uk-card uk-card-small uk-card-default uk-position-absolute': true,
+                            'uk-padding-small uk-box-shadow-large uk-margin-top': true,
                             'uk-active': selectedCentre===null,
                         }">
                             <h5 v-if="selectedCentre" class="uk-h5 uk-margin-remove">
                                 {{ selectedCentreDetails.title }}
-                                <span v-if="!selectedCentreDetails.active" class="uk-text-muted uk-text-small">(Closed)</span>
+                                <span v-if="!selectedCentreDetails.active" class="uk-text-muted uk-text-small">
+                                    (Closed)
+                                </span>
                             </h5>
                             <p v-else class="uk-margin-remove uk-text-bold">
                                 Active at the end of 2018
@@ -68,13 +74,13 @@
                     <div v-if="selectedCentre===null">
                         <h3 class="uk-h3 uk-margin-small">IRC</h3>
                         <h4 class="uk-h4 uk-text-secondary uk-margin-small">Immigration Removal Centre</h4>
-                        <p></p>
+                        <p />
                         <h3 class="uk-h3 uk-margin-small">STHF</h3>
                         <h4 class="uk-h4 uk-text-secondary uk-margin-small">Short-Term Holding Facility</h4>
-                        <p></p>
+                        <p />
                         <h3 class="uk-h3 uk-margin-small">PDA</h3>
                         <h4 class="uk-h4 uk-text-secondary uk-margin-small">Pre-Departure Accommodation</h4>
-                        <p></p>
+                        <p />
                     </div>
                     <div v-else>
                         <div v-for="y in selectedCentreDetainees" :key="y.year">
@@ -92,11 +98,13 @@
                     </div>
                 </div>
                 <div class="uk-margin uk-width-1-1">
-                    <span class="uk-text-muted uk-align-right uk-margin-remove">(Numbers shown are max detainees at end of busiest quarter)</span><br>
+                    <span class="uk-text-muted uk-align-right uk-margin-remove">
+                        (Numbers shown are max detainees at end of busiest quarter)
+                    </span>
+                    <br>
                     <citation tag="detention-stats" class="uk-align-right" />
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -104,7 +112,6 @@
 <script>
 import PointMap from './PointMap';
 import Citation from './Citation';
-import * as am4core from '@amcharts/amcharts4/core';
 import LoadingCover from './LoadingCover';
 import axios from 'axios';
 export default {
@@ -148,7 +155,7 @@ export default {
                         || data[q.substr(0, 4)] < this.series[q][this.selectedCentre]) {
                         data[q.substr(0, 4)] = {
                             year: parseInt(q.substr(0, 4)),
-                            detainees: this.series[q][this.selectedCentre]
+                            detainees: this.series[q][this.selectedCentre],
                         };
                     }
                 }

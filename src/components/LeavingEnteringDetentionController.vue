@@ -1,8 +1,8 @@
 <!--
- * AnnualTrendsController
+ * LeavingEnteringDetentionController
 -->
 <template>
-    <div class="component-annual-trends-controller uk-container">
+    <div class="component-leaving-entering-detention-controller uk-container">
         <div class="uk-card uk-card-default uk-padding uk-width-1-1">
             <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
@@ -32,12 +32,12 @@
                         Chart Type:
                     </label>
                     <button v-for="(n,k) in displayTypeOptions" :key="k"
-                            @click="displayType=k"
                             :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': displayType !== k,
                                 'uk-button-secondary': displayType === k,
-                            }">
+                            }"
+                            @click="displayType=k">
                         {{ n }}
                     </button>
                 </div>
@@ -46,14 +46,16 @@
                         Choose View:
                     </label>
                     <button v-for="(n,k) in showNames" :key="k"
-                            @click="show=k"
                             :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': show !== k,
                                 'uk-button-secondary': show === k,
                             }"
                             :disabled="k === 'resolution' && showOnly === 'entering'"
-                            :uk-tooltip="k === 'resolution' && showOnly === 'entering'?'This option is not available for your current selection.':false">
+                            :uk-tooltip="k === 'resolution' && showOnly === 'entering'
+                                ?'This option is not available for your current selection.'
+                                :false"
+                            @click="show=k">
                         {{ n }}
                     </button>
                 </div>
@@ -61,49 +63,51 @@
                     <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
                         Show:
                     </label>
-                    <button @click="showOnly=null"
-                            :class="{
+                    <button :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': showOnly !== null,
                                 'uk-button-secondary': showOnly === null,
-                            }">
+                            }"
+                            @click="showOnly=null">
                         All
                     </button>
-                    <button @click="showOnly='entering'"
-                            :disabled="show === 'resolution'"
-                            :uk-tooltip="show === 'resolution'?'This option is not available for your current selection.':false"
+                    <button :disabled="show === 'resolution'"
+                            :uk-tooltip="show === 'resolution'
+                                ?'This option is not available for your current selection.'
+                                :false"
                             :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': showOnly !== 'entering',
                                 'uk-button-secondary': showOnly === 'entering',
-                            }">
+                            }"
+                            @click="showOnly='entering'">
                         Entering Only
                     </button>
-                    <button @click="showOnly='leaving'"
-                            :class="{
+                    <button :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': showOnly !== 'leaving',
                                 'uk-button-secondary': showOnly === 'leaving',
-                            }">
+                            }"
+                            @click="showOnly='leaving'">
                         Leaving Only
                     </button>
                     <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
                         Display leaving as negative?:
                     </label>
-                    <button @click="negateLeaveValues=false"
-                            :class="{
+                    <button :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': negateLeaveValues !== false,
                                 'uk-button-secondary': negateLeaveValues === false,
-                            }">
+                            }"
+                            @click="negateLeaveValues=false">
                         No
                     </button>
-                    <button @click="negateLeaveValues=true"
-                            :class="{
+                    <button :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': negateLeaveValues !== true,
                                 'uk-button-secondary': negateLeaveValues === true,
-                            }">
+                            }"
+                            @click="negateLeaveValues=true">
                         Yes
                     </button>
                 </div>
@@ -123,7 +127,7 @@ import * as am4charts from '@amcharts/amcharts4/charts';
 import LoadingCover from './LoadingCover';
 import axios from 'axios';
 export default {
-    name: 'AnnualTrendsController',
+    name: 'LeavingEnteringDetentionController',
     components: { 'loading': LoadingCover, 'chart': Chart, 'citation': Citation },
     data() {
         return {
@@ -249,7 +253,7 @@ export default {
     },
     methods: {
         callLoadData() {
-            return axios.get('/data/annual-trends.json');
+            return axios.get('/data/leaving-entering-detention.json');
         },
         async loadSeriesData() {
             this.loading = true;
@@ -304,8 +308,7 @@ export default {
             series.strokeOpacity = 1;
             return series;
         },
-        chartUpdated({ action }) {
-            // console.log('updated', action);
+        chartUpdated() {
             this.rendering = false;
         },
     },

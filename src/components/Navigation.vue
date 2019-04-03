@@ -15,8 +15,8 @@
             <li :class="{ 'uk-active': active==='detainee-origin', 'uk-padding-small': true }">
                 <router-link to="/detainee-origin" class="uk-height-1-1">Origin of Detainees</router-link>
             </li>
-            <li :class="{ 'uk-active': active==='annual-trends', 'uk-padding-small': true }">
-                <router-link to="/annual-trends" class="uk-height-1-1">
+            <li :class="{ 'uk-active': active==='leaving-entering-detention', 'uk-padding-small': true }">
+                <router-link to="/leaving-entering-detention" class="uk-height-1-1">
                     People Entering &amp; <br> Leaving Detention
                 </router-link>
             </li>

@@ -5,7 +5,7 @@
 -->
 <template>
     <div id="app" class="uk-position-absolute uk-height-1-1 uk-width-1-1">
-        <div class="uk-background-cover uk-position-fixed uk-position-top-left uk-height-1-1 uk-width-1-1"></div>
+        <div class="uk-background-cover uk-position-fixed uk-position-top-left uk-height-1-1 uk-width-1-1" />
         <div class="uk-grid uk-grid-collapse uk-margin-top expand-height uk-width-1-1">
             <navigation class="uk-width-auto expand-height" />
             <div id="content" class="uk-width-expand">

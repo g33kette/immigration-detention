@@ -2,7 +2,7 @@
  * Citation Component
 -->
 <template>
-    <router-link :to="'/references/'+ref" class="citation">[{{ ref }}] {{ citation}}</router-link>
+    <router-link :to="'/references/'+ref" class="citation">[{{ ref }}] {{ citation }}</router-link>
 </template>
 
 <script>

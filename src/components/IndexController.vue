@@ -61,7 +61,10 @@
                 </p>
             </div>
             <div class="uk-width-1-1">
-                <div class="more-links uk-section uk-section-secondary uk-section-small uk-padding-small uk-text-large uk-preserve-color">
+                <div :class="{
+                    'more-links uk-section uk-section-secondary uk-section-small uk-padding-small': true,
+                    'uk-text-large uk-preserve-color': true,
+                }">
                     <div uk-grid>
                         <div class="uk-width-1-3">
                             <h3 class="uk-heading-bullet uk-text-emphasis">
