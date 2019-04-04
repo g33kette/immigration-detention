@@ -35,14 +35,12 @@ export default {
         return {
             count: 1,
             clearInterval: null,
+            speed: 500,
         };
     },
     watch: {
         days() {
-            this.count = 0;
-            if (this.clearInterval) {
-                clearInterval(this.clearInterval);
-            }
+            this.reset();
             this.tick();
         },
     },
@@ -50,6 +48,13 @@ export default {
         this.tick();
     },
     methods: {
+        reset() {
+            this.count = 0;
+            this.speed = 500;
+            if (this.clearInterval) {
+                clearInterval(this.clearInterval);
+            }
+        },
         tick() {
             this.clearInterval = setTimeout(() => {
                 this.count++;
@@ -58,7 +63,7 @@ export default {
                 } else {
                     this.$emit('displayComplete');
                 }
-            }, 20);
+            }, 15);
         },
         yearsText(days) {
             const years = Math.floor(days/365);

@@ -2,7 +2,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faMale,
     faFemale,
-    faChild, faCircleNotch, faUndo,
+    faChild, faCircleNotch, faUndo, faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 
 /**
@@ -14,4 +14,5 @@ export function loadIcons() {
     library.add(faChild);
     library.add(faCircleNotch);
     library.add(faUndo);
+    library.add(faChevronDown);
 }

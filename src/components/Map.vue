@@ -26,6 +26,7 @@ export default {
         showZoomControls: { required: false, type: Boolean, default: true },
         showExportControls: { required: false, type: Boolean, default: false },
         showBackground: { required: false, type: Boolean, default: true },
+        disableZoom: { required: false, type: Boolean, default: false },
     },
     data() {
         return {
@@ -66,7 +67,11 @@ export default {
             map.background.fillOpacity = this.showBackground?1:0;
 
             // Add zoom controls
-            if (this.showZoomControls) {
+            if (this.disableZoom) {
+                map.seriesContainer.draggable = false;
+                map.seriesContainer.resizable = false;
+                map.maxZoomLevel = 1;
+            } else if (this.showZoomControls) {
                 map.zoomControl = new am4maps.ZoomControl();
                 map.zoomControl.slider.height = 100;
             }

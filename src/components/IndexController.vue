@@ -5,97 +5,157 @@
 -->
 <template>
     <div class="component-index-controller">
-        <div uk-grid>
-            <div class="uk-width-2-3">
-                <div class="detainees uk-card uk-card-default uk-padding uk-text-center uk-text-bottom">
-                    <h3 class="uk-heading-divider uk-h3">
-                        People Detained Under UK Immigration Law <span class="uk-text-muted">Throughout 2018</span>
-                    </h3>
-                    <div uk-grid>
-                        <div class="uk-width-1-3 uk-inline">
-                            <div class="">
-                                <font-awesome-icon icon="male" size="10x" />
-                                <p class="uk-text-emphasis uk-alert uk-alert-primary uk-text-large">
-                                    <span class="uk-text-secondary uk-text-bold">{{ men | numberFormat }}</span> Men
-                                </p>
-                            </div>
-                        </div>
-                        <div class="uk-width-1-3 uk-inline">
-                            <div class="uk-position-bottom">
-                                <font-awesome-icon icon="female" size="8x" />
-                                <p class="uk-text-emphasis uk-alert uk-alert-primary uk-text-large">
-                                    <span class="uk-text-secondary uk-text-bold">{{ women | numberFormat }}</span> Women
-                                </p>
-                            </div>
-                        </div>
-                        <div class="uk-width-1-3 uk-inline">
-                            <div class="uk-position-bottom">
-                                <font-awesome-icon icon="child" size="5x" />
-                                <p class="uk-text-emphasis uk-alert uk-alert-primary uk-text-large">
-                                    <span class="uk-text-secondary uk-text-bold">
-                                        {{ children | numberFormat }}
-                                    </span>
-                                    Children
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="uk-text-left">
-                        <router-link class="uk-button uk-button-default" to="/detainee-origin">
-                            Learn More About Detainees &gt;
-                        </router-link>
-                        <citation tag="detention-stats" class="uk-align-right" />
+        <div class=" uk-margin-large-bottom uk-height-1-1">
+            <!-- Did you know? -->
+            <div class="uk-width-1-1 welcome">
+                <div class="uk-card uk-width-1-2 uk-height-1-1 uk-align-center">
+                    <h1 class="uk-heading-hero uk-light uk-position-center">
+                        Did you know, every year the UK detains thousands of people without charge?
+                    </h1>
+                    <a class="uk-button uk-button-primary uk-position-bottom-center uk-margin-large-bottom"
+                       href="#more"
+                       uk-scroll>
+                        <font-awesome-icon icon="chevron-down" />
+                    </a>
+                </div>
+            </div>
+            <!-- Immigration Detention Definition -->
+            <div id="more" class="uk-section uk-section-secondary uk-preserve-color uk-margin-large-top">
+                <div class="uk-container">
+                    <div class="uk-padding uk-padding-remove-vertical">
+                        <p class="uk-h2">
+                            Immigration Detention:
+                            <br>
+                            <span class="uk-text-muted">
+                                The practice of detaining asylum seekers and others to pursue
+                                immigration-related purposes.<br>
+                                <span class="uk-light">
+                                    It is an administrative process rather than a criminal procedure.
+                                </span>
+                            </span><br>
+                            <citation tag="migration-observatory-1" />
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="uk-width-1-3">
-                <p class="uk-h2">
-                    Immigration Detention:
-                    <br>
-                    <span class="uk-text-muted">
-                        Home Office practice of detaining asylum seekers and others to pursue immigration-related
-                        purposes.<br>
-                        <span class="uk-light">It is an administrative process rather than a criminal procedure.</span>
-                    </span><br>
-                    <citation tag="migration-observatory-1" />
-                </p>
+            <!-- Detainees -->
+            <div class="uk-section uk-section-small uk-section-default uk-preserve-color uk-margin-large-top">
+                <div class="uk-container">
+                    <div class="uk-padding uk-padding-remove-vertical">
+                        <h3 class="uk-heading-divider uk-h3 uk-heading-bullet">
+                            Detainees in the UK include men, women and children.
+                        </h3>
+                        <div uk-grid>
+                            <div class="uk-width-1-3 uk-inline">
+                                <div class="">
+                                    <font-awesome-icon icon="male" size="6x" class="uk-margin-right" />
+                                    <p class="uk-text-emphasis uk-alert uk-alert-primary uk-text-large uk-inline">
+                                        <span class="uk-text-secondary uk-text-bold">{{ men | numberFormat }}</span>
+                                        Men
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="uk-width-1-3 uk-inline">
+                                <div class="uk-position-bottom">
+                                    <font-awesome-icon icon="female" size="5x" class="uk-margin-right" />
+                                    <p class="uk-text-emphasis uk-alert uk-alert-primary uk-text-large uk-inline">
+                                        <span class="uk-text-secondary uk-text-bold">{{ women | numberFormat }}</span>
+                                        Women
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="uk-width-1-3 uk-inline">
+                                <div class="uk-position-bottom">
+                                    <font-awesome-icon icon="child" size="3x" class="uk-margin-right" />
+                                    <p class="uk-text-emphasis uk-alert uk-alert-primary uk-text-large uk-inline">
+                                        <span class="uk-text-secondary uk-text-bold">
+                                            {{ children | numberFormat }}
+                                        </span>
+                                        Children
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-text-left">
+                            <p class="uk-heading-divider uk-h3 uk-text-muted uk-align-left">
+                                Overall, {{ men + women + children | numberFormat }} people entered immigration
+                                detention in 2018.
+                            </p>
+                            <citation tag="detention-stats" class="uk-align-right" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="uk-width-1-1">
-                <div :class="{
-                    'more-links uk-section uk-section-secondary uk-section-small uk-padding-small': true,
-                    'uk-text-large uk-preserve-color': true,
-                }">
-                    <div uk-grid>
-                        <div class="uk-width-1-3">
-                            <h3 class="uk-heading-bullet uk-text-emphasis">
-                                Under UK Immigration Law you can be detained without charge and
-                                <span class="uk-light">without limit</span>.
+            <!-- UK Is Indefinite -->
+            <div class="uk-section uk-section-secondary uk-preserve-color uk-margin-large-top">
+                <div class="uk-container">
+                    <div :class="{
+                        'more-links uk-section uk-section-secondary uk-section-small uk-padding-small': true,
+                        'uk-text-large uk-preserve-color uk-padding uk-padding-remove-vertical': true,
+                    }">
+                        <div uk-grid>
+                            <div class="uk-width-1-3">
+                                <h3 class="uk-heading-bullet uk-text-emphasis">
+                                    Under UK Immigration Law you can be detained without charge and
+                                    <span class="uk-light">without limit</span>.
+                                </h3>
+                                <p>
+                                    At the end of 2018, the longest immigration detention stay was up to
+                                    <span class="uk-light">1,280</span> days.
+                                </p>
+                            </div>
+                            <div class="uk-width-1-3">
+                                <map-chart :series-data="{0: euMapData}"
+                                           :active-series="0"
+                                           :custom-template="euMapTemplate"
+                                           :eu="true"
+                                           :show-export-controls="false"
+                                           :show-zoom-controls="false"
+                                           :show-background="false"
+                                           :disable-zoom="true"
+                                           class="uk-height-medium" />
+                            </div>
+                            <div class="uk-width-1-3">
+                                <p class="uk-light">
+                                    The UK is one of only 3 countries in the EU that has not agreed to limit the length
+                                    of detention for immigration purposes.
+                                </p>
+                                <citation tag="eu-directive" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- UK Is Indefinite -->
+            <div class="uk-section uk-section-default uk-preserve-color uk-margin-large-top">
+                <div class="uk-container">
+                    <div class="uk-padding uk-padding-remove-vertical" uk-grid>
+                        <div class="uk-width-1-5">
+                            <img src="../assets/images/homeofficelogo.png" class="" alt="UK Home Office Logo">
+                        </div>
+                        <div class="uk-width-4-5">
+                            <h3 class="uk-text-emphasis uk-text-large">
+                                Please use this website to explore the official Home Office data.
                             </h3>
-                            <p>
-                                At the end of 2018, the longest detention stay was
-                                <span class="uk-light">1,280</span> days.
+                            <p class="uk-text-medium">
+                                The UK Home Office regularly release statistics relating to immigration detentions as
+                                part of the immigration national statistics, you can download the raw data for 2018
+                                here:<br>
+                                <!-- eslint-disable-next-line -->
+                                <a href="https://www.gov.uk/government/statistics/immigration-statistics-year-ending-december-2018-data-tables"
+                                   title="Immigration statistics, year ending December 2018: data tables"
+                                   target="_blank">
+                                    <!-- eslint-disable-next-line -->
+                                    https://www.gov.uk/government/statistics/immigration-statistics-year-ending-december-2018-data-tables
+                                </a><br>
                             </p>
-                            <router-link to="/detention-lengths" class="uk-button uk-button-default">
-                                Show more &gt;
-                            </router-link>
-                        </div>
-                        <div class="uk-width-1-3">
-                            <map-chart :series-data="{0: euMapData}"
-                                       :active-series="0"
-                                       :custom-template="euMapTemplate"
-                                       :eu="true"
-                                       :show-export-controls="false"
-                                       :show-zoom-controls="false"
-                                       :show-background="false"
-                                       class="uk-height-medium" />
-                        </div>
-
-                        <div class="uk-width-1-3">
-                            <p class="uk-light">
-                                The UK is one of only 3 countries in the EU that has not agreed to limit the length of
-                                detention for immigration purposes.
+                            <p class="uk-text-medium">
+                                Published immigration detention figures relate only to those
+                                <span class="uk-text-bold uk-text-secondary">
+                                    detained solely under Immigration Act powers,
+                                </span> and exclude those detained for criminal purposes.
                             </p>
-                            <citation tag="eu-directive" />
+                            <p class="uk-text-right"><citation tag="detention-stats-guide" /></p>
                         </div>
                     </div>
                 </div>
@@ -152,6 +212,13 @@ export default {
     }
     .uk-light {
         color: #fff;
+    }
+    .welcome {
+        height: 80vh;
+        .uk-heading-hero {
+            font-size: 4rem;
+            margin-top: -10vh;
+        }
     }
 </style>
 

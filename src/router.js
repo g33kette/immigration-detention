@@ -17,15 +17,14 @@ import DetentionLengthsController from './components/DetentionLengthsController'
 const routes = [
     { path: '/', name: 'index', component: IndexController },
     { path: '/detainee-origin', name: 'detainee-origin', component: DetaineeOriginController },
-    {
-        path: '/leaving-entering-detention',
-        name: 'leaving-entering-detention',
-        component: LeavingEnteringDetentionController,
-    },
+    { path: '/entering-detention', name: 'entering-detention', component: LeavingEnteringDetentionController },
+    { path: '/leaving-detention', name: 'leaving-detention', component: LeavingEnteringDetentionController },
     { path: '/detention-centres', name: 'detention-centres', component: DetentionCentresController },
     { path: '/people-in-detention', name: 'people-in-detention', component: PeopleInDetentionController },
     { path: '/detention-lengths', name: 'detention-lengths', component: DetentionLengthsController },
     { path: '/references/:id?', name: 'references', component: ReferencesController },
 ];
 
-export default new VueRouter({ routes });
+const scrollBehavior = () => ({ x: 0, y: 0 });
+
+export default new VueRouter({ routes, scrollBehavior });
