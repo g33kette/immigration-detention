@@ -10,7 +10,8 @@
             <div class="uk-width-1-1 welcome">
                 <div class="uk-card uk-width-1-2 uk-height-1-1 uk-align-center">
                     <h1 class="uk-heading-hero uk-light uk-position-center">
-                        Did you know, every year the UK detains thousands of people without charge?
+                        Did you know, every year the UK detains thousands of people
+                        <span class="uk-text-emphasis-primary">without charge</span>?
                     </h1>
                     <a class="uk-button uk-button-primary uk-position-bottom-center uk-margin-large-bottom"
                        href="#more"
@@ -204,6 +205,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @import '../assets/scss/variables';
     .more-links {
         .uk-button {
             text-transform: none;
@@ -211,6 +213,9 @@ export default {
         }
     }
     .uk-light {
+        .uk-text-emphasis-primary {
+            color: $global-primary-background;
+        }
         color: #fff;
     }
     .welcome {

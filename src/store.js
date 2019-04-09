@@ -52,6 +52,49 @@ export default new Vuex.Store({
                 datePublished: '16 Dec 2008',
                 dateAccessed: '31 Jan 2019',
             },
+            {
+                key: 'shaw-report',
+                citation: 'Shaw Report 2016',
+                title: 'Review into the Welfare in Detention of Vulnerable Persons: Independent review of Home Office' +
+                    ' policies and operating procedures that affect the welfare of immigration detainees.',
+                author: 'Stephen Shaw',
+                link: 'https://www.gov.uk/government/publications/review-into-the-welfare-in-detention' +
+                    '-of-vulnerable-persons',
+                datePublished: 'Jan 2016',
+                dateAccessed: '09 Apr 2019',
+            },
+            {
+                key: 'panorama-report',
+                citation: 'BBC Panorama',
+                title: 'What I saw when I went undercover: The 21-year-old whistleblower at the immigration ' +
+                    'removal centre',
+                author: 'Alison Holt',
+                link: 'https://www.bbc.co.uk/news/resources/idt-sh/g4s_brook_house_immigration_removal_' +
+                    'centre_undercover',
+                datePublished: '04 Sep 2017',
+                dateAccessed: '09 Apr 2019',
+            },
+            {
+                key: 'yarls-wood-protest',
+                citation: 'Yarl\'s Wood Activists',
+                title: 'Guardian News Article: Activists surround Yarl\'s Wood detention centre with wall of noise',
+                author: 'Damien Gayle and Ruth McKee',
+                link: 'https://www.theguardian.com/uk-news/2016/sep/10/activists-demand-closure-yarls-wood-surround-' +
+                    'centre-wall-noise',
+                datePublished: '10 Sep 2016',
+                dateAccessed: '09 Apr 2019',
+            },
+            {
+                key: 'independent-hunger-strike',
+                citation: 'Yarl\'s Wood Hunger Strike',
+                title: 'Independent News Article: More than 100 women in Yarl\'s Wood detention centre go on hunger ' +
+                    'strike over \'inhumane\' conditions',
+                author: 'May Bulman',
+                link: 'https://www.independent.co.uk/news/uk/home-news/yarls-wood-women-immigration-detention-centre-' +
+                    'hunger-strike-home-office-a8223886.html',
+                datePublished: '22 Feb 2018',
+                dateAccessed: '09 Apr 2019',
+            },
         ],
     },
     getters: {

@@ -5,7 +5,7 @@
 -->
 <template>
     <div class="component-navigation">
-        <nav class="uk-position-fixed uk-background-secondary">
+        <nav class="uk-position-absolute uk-background-secondary">
             <!-- Nav Bar Links -->
             <ul class="uk-nav uk-light uk-margin-remove">
                 <!-- Overview -->
@@ -38,6 +38,10 @@
                     <router-link to="/leaving-detention" class="uk-height-1-1">
                         People Leaving Detention
                     </router-link>
+                </li>
+                <!-- News -->
+                <li :class="{ 'uk-active': active==='news', 'uk-padding-small': true }">
+                    <router-link to="/news" class="uk-height-1-1">In The News</router-link>
                 </li>
                 <!-- References -->
                 <li :class="{ 'uk-active': active==='references', 'uk-padding-small': true }">

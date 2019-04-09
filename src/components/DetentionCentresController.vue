@@ -106,6 +106,35 @@
                 </div>
             </div>
         </div>
+        <div class="uk-card uk-card-secondary uk-padding uk-width-1-1 uk-margin-large-top">
+            <div uk-grid>
+                <div class="uk-width-1-4">
+                    <img src="../assets/images/yw3.jpg"
+                         class="uk-width-1-1 uk-margin"
+                         alt="Yarl's Wood Immigration Centre">
+                    <img src="../assets/images/yw2.jpg"
+                         class="uk-width-1-1 uk-margin"
+                         alt="Yarl's Wood Immigration Centre Protest">
+                </div>
+                <div class="uk-width-1-2">
+                    <h1>Conditions &amp; Controversy</h1>
+                    <p>
+                        Independent and government investigations have criticised the conditions within UK immigration
+                        detention centres, particularly for vulnerable detainees.
+                        <br>
+                        <citation tag="shaw-report" class="uk-margin-right" />
+                        <citation tag="panorama-report" class="uk-margin-right" />
+                    </p>
+                    <p>
+                        They are often a focus of activism by Human Rights groups and detainees have been reported to go
+                        on hunger strike as a protest against conditions.
+                        <br>
+                        <citation tag="yarls-wood-protest" class="uk-margin-right" />
+                        <citation tag="independent-hunger-strike" class="uk-margin-right" />
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -175,7 +204,7 @@ export default {
         async loadSeriesData() {
             this.loading = true;
             const responseData = (await this.callLoadData()).data;
-            this.series = responseData.data;
+            this.series = responseData.annualData;
             this.centresData = responseData.centres;
             this.loading = false;
         },

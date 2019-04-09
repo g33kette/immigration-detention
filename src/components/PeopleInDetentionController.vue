@@ -99,7 +99,6 @@ export default {
                 gender: 'By Gender',
                 age: 'By Age',
                 asylum: 'By Asylum Request',
-                centre: 'By Detention Centre',
             },
             displayType: 'bar',
             displayTypeOptions: {
