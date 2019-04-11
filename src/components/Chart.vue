@@ -97,8 +97,35 @@ export default {
                 return;
             }
 
+            if (this.xAxisSettings.ranges) {
+                for (const range of this.xAxisSettings.ranges) {
+                    const axisRange = xAxis.axisRanges.create();
+                    Object.assign(axisRange.grid, range.grid);
+                    Object.assign(axisRange.label, range.label);
+                    if (range.axisFill) {
+                        Object.assign(axisRange.axisFill, range.axisFill);
+                    }
+                    switch (this.xAxisSettings.type) {
+                    case 'date':
+                        axisRange.date = range.date;
+                        if (range.endDate) {
+                            axisRange.endDate = range.endDate;
+                        }
+                        break;
+                    case 'category':
+                        axisRange.category = range.category;
+                        if (range.endCategory) {
+                            axisRange.endCategory = range.endCategory;
+                        }
+                        break;
+                    }
+                }
+            }
+
             // Add value axis
             const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            valueAxis.min = 0;
+            valueAxis.extraMax = 0.2;
 
             // Add Series
             for (const addSeries of this.series) {

@@ -9,8 +9,88 @@
                 Origin of Detainees Entering UK Immigration Detention
                 <span class="uk-text-muted">{{ year==='total'?'All Available Years':year }}</span>
             </h3>
-            <div class="uk-position-relative">
-                <loading v-if="rendering&&!loading" :opacity="0.5" />
+            <div>
+                <p>This map shows the nationality of people entering UK immigration detention.</p>
+            </div>
+            <form class="uk-form-horizontal uk-margin-bottom" @submit.prevent>
+                <div class=" uk-width-1-1">
+                    <div class="uk-margin">
+                        <label class="uk-form-label uk-text-secondary uk-text-bold">
+                            Shading:
+                        </label>
+                        <div class="uk-radio-controls uk-grid-small uk-child-width-auto uk-grid">
+                            <label>
+                                <input v-model="shading"
+                                       class="uk-radio"
+                                       type="radio"
+                                       name="shading"
+                                       value="total">
+                                All Detainees
+                            </label>
+                            <label>
+                                <input v-model="shading"
+                                       class="uk-radio"
+                                       type="radio"
+                                       name="shading"
+                                       value="adults">
+                                Adults
+                            </label>
+                            <label>
+                                <input v-model="shading"
+                                       class="uk-radio"
+                                       type="radio"
+                                       name="shading"
+                                       value="children">
+                                Children
+                            </label>
+                            <label>
+                                <input v-model="shading"
+                                       class="uk-radio"
+                                       type="radio"
+                                       name="shading"
+                                       value="male">
+                                Men
+                            </label>
+                            <label>
+                                <input v-model="shading"
+                                       class="uk-radio"
+                                       type="radio"
+                                       name="shading"
+                                       value="female">
+                                Women
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-width-1-1 uk-margin uk-margin-bottom">
+                    <button :class="{
+                                'uk-button uk-button-small uk-margin-right': true,
+                                'uk-button-default': year !== 'total',
+                                'uk-button-secondary': year === 'total',
+                            }"
+                            @click="year='total'">
+                        Show All Years Combined
+                    </button>
+                    <button :class="{
+                                'uk-button uk-button-small uk-margin-right': true,
+                                'uk-button-default': year === 'total',
+                                'uk-button-secondary': year !== 'total',
+                            }"
+                            @click="year=2018">
+                        Show Years Independently
+                    </button>
+                    <p v-if="year!=='total'"
+                       :class="{
+                           'uk-margin-small uk-text-muted uk-text-italic uk-text-small': true,
+                           'uk-display-inline-block uk-animation-fade': true,
+                       }">
+                        You can control which year to show beneath the map.
+                    </p>
+                </div>
+
+            </form>
+            <div class="uk-position-relative uk-padding-small uk-padding-remove-horizontal">
+                <!--<loading v-if="rendering&&!loading" :opacity="0.5" />-->
                 <map-chart v-if="series"
                            class="map uk-height-large"
                            :series-data="series"
@@ -18,74 +98,66 @@
                            :custom-template="customTemplate"
                            @updated="mapUpdated" />
             </div>
-            <div class="legend uk-align-right uk-text-small">
+            <div class="legend uk-align-right uk-text-small uk-margin-remove">
                 <div class="legend-gradient" />
-                <span class="uk-align-left">Low {{ lowValue | numberFormat }}</span>
-                <span class="uk-align-right">High  {{ highValue | numberFormat }}</span>
+                <span class="uk-align-left uk-margin-small uk-margin-remove-top">Low {{ lowValue | numberFormat }}</span>
+                <span class="uk-align-right uk-margin-small uk-margin-remove-top">High  {{ highValue | numberFormat }}</span>
             </div>
-            <form class="uk-form-horizontal uk-margin-large-top" @submit.prevent>
-                <div uk-grid>
-                    <div class=" uk-width-1-3">
-                        <div class="uk-margin">
-                            <label class="uk-form-label" for="year">Change Year:</label>
-                            <div class="uk-form-controls">
-                                <select id="year" v-model="year" class="uk-select">
-                                    <option v-for="y in availableYears" :key="y" :value="y">
-                                        {{ y==='total'?'All Available':y }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
+            <form class="uk-form-horizontal uk-margin-bottom uk-clearfix" @submit.prevent>
+                <div v-show="year!=='total'" class="uk-width-1-1">
+                    <div class="uk-margin">
+                        <input id="year"
+                               v-model="year"
+                               class="uk-range"
+                               type="range"
+                               :max="maxYear"
+                               :min="minYear"
+                               step="1">
                     </div>
-                    <div class=" uk-width-2-3">
-                        <div class="uk-margin">
-                            <label class="uk-form-label" for="year">Shading:</label>
-                            <div class="uk-radio-controls uk-grid-small uk-child-width-auto uk-grid">
-                                <label>
-                                    <input v-model="shading"
-                                           class="uk-radio"
-                                           type="radio"
-                                           name="shading"
-                                           value="total">
-                                    Total
-                                </label>
-                                <label>
-                                    <input v-model="shading"
-                                           class="uk-radio"
-                                           type="radio"
-                                           name="shading"
-                                           value="adults">
-                                    Adults
-                                </label>
-                                <label>
-                                    <input v-model="shading"
-                                           class="uk-radio"
-                                           type="radio"
-                                           name="shading"
-                                           value="children">
-                                    Children
-                                </label>
-                                <label>
-                                    <input v-model="shading"
-                                           class="uk-radio"
-                                           type="radio"
-                                           name="shading"
-                                           value="male">
-                                    Male
-                                </label>
-                                <label>
-                                    <input v-model="shading"
-                                           class="uk-radio"
-                                           type="radio"
-                                           name="shading"
-                                           value="female">
-                                    Female
-                                </label>
-                            </div>
-                        </div>
+                    <div class="uk-margin">
+                        <button :class="{
+                                    'uk-button uk-button-default uk-margin-right': true,
+                                    'uk-disabled uk-text-muted': year<=minYear,
+                                }"
+                                title="Previous Year"
+                                @click="year=year>minYear?year-1:year">
+                            <font-awesome-icon icon="backward" />
+                        </button>
+                        <select v-model="year" class="uk-select uk-width-small uk-margin uk-margin-remove-vertical">
+                            <option v-for="y in availableYears.filter(x => x !== 'total')" :key="y" :value="y">
+                                {{ y }}
+                            </option>
+                        </select>
+                        <button :class="{
+                                    'uk-button uk-button-default uk-margin-left': true,
+                                    'uk-disabled uk-text-muted': year>=maxYear,
+                                }"
+                                title="Next Year"
+                                @click="year=year<maxYear?year+1:year">
+                            <font-awesome-icon icon="forward" />
+                        </button>
+                        <button :class="{
+                                    'uk-button uk-button-default uk-margin-left': true,
+                                }"
+                                :title="autoPlay?'Stop':'Play Through Years'"
+                                @click="toggleAutoPlay">
+                            <font-awesome-icon :icon="autoPlay?'stop':'play'" />
+                        </button>
                     </div>
                 </div>
             </form>
+            <div class="uk-margin-small">
+                <span class="uk-text-bold"><font-awesome-icon icon="question-circle" /> Using The Chart</span>
+                <ul class="uk-list-bullet uk-list">
+                    <li>
+                        You can zoom by using the mouse scroll button or using the zoom controls on the right hand
+                        side of the map.
+                    </li>
+                    <li>You can move around the map by clicking and dragging the area.</li>
+                    <li>You can hover a country to show the details.</li>
+                    <li>A darker shading indicates a higher proportion of detainees.</li>
+                </ul>
+            </div>
             <div class="uk-margin">
                 <citation tag="detention-stats" class="uk-align-right" />
             </div>
@@ -118,6 +190,8 @@ export default {
             series: null,
             extremes: {},
             totalExtremes: {},
+            autoPlay: false,
+            autoPlaySpeed: 1000,
         };
     },
     computed: {
@@ -132,7 +206,16 @@ export default {
                     {male} Men
                     {female} Women`,
                 pointerOrientation: 'vertical',
+                stroke: am4core.color('#666666'),
             };
+        },
+        minYear() {
+            return parseInt(this.availableYears && this.availableYears.length ?
+                this.availableYears[this.availableYears.length-1]
+                : 0);
+        },
+        maxYear() {
+            return parseInt(this.availableYears && this.availableYears.length ? this.availableYears[1] : 0);
         },
         lowValue() {
             return 0;
@@ -164,8 +247,11 @@ export default {
         shading() {
             this.rendering = true;
         },
-        year() {
+        year(newYear) {
             this.rendering = true;
+            if (typeof newYear === 'string') {
+                return parseInt(newYear);
+            }
         },
     },
     mounted() {
@@ -174,6 +260,27 @@ export default {
     methods: {
         callLoadData() {
             return axios.get('/data/detainee-origins.json');
+        },
+        toggleAutoPlay() {
+            if (!this.autoPlay) {
+                if (this.year === this.maxYear) {
+                    this.autoPlay = setTimeout(() => this.play(this.minYear), this.autoPlaySpeed);
+                } else {
+                    this.autoPlay = setTimeout(() => this.play(this.year+1), this.autoPlaySpeed);
+                }
+            } else {
+                clearInterval(this.autoPlay);
+                this.autoPlay = false;
+            }
+        },
+        play(year) {
+            console.log(year, this.maxYear);
+            this.year = year;
+            if (year < this.maxYear) {
+                this.autoPlay = setTimeout(() => this.play(year + 1), this.autoPlaySpeed);
+            } else {
+                this.autoPlay = false;
+            }
         },
         async loadSeriesData() {
             this.loading = true;
@@ -207,7 +314,7 @@ export default {
             this.loading = false;
         },
         shadingColor(extreme, value) {
-            const col = value === 0 ? 205 : (Math.floor(180 - ((180/extreme) * value)));
+            const col = value === 0 ? 255 : (Math.floor(205 - ((205/extreme) * value)));
             return am4core.color('rgb(' + col + ', ' + col + ', ' + col + ')');
         },
         mapUpdated({ action }) {
@@ -219,7 +326,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    //@import '../assets/scss/variables';
+    @import '../assets/scss/variables';
     form {
         .uk-form-label {
             width: 80px;
@@ -237,8 +344,11 @@ export default {
     .legend-gradient {
         width: 200px;
         height: 15px;
-        background: linear-gradient(to right, rgb(205,205,205) , black);
+        background: linear-gradient(to right, white , black);
         border-radius: 3px;
+    }
+    .uk-range {
+        border: solid 10px $global-secondary-background;
     }
 </style>
 

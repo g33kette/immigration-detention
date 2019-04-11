@@ -95,6 +95,16 @@ export default new Vuex.Store({
                 datePublished: '22 Feb 2018',
                 dateAccessed: '09 Apr 2019',
             },
+            {
+                key: 'hostile-environment',
+                citation: 'Inspection of Hostile Environment Measures',
+                title: 'Inspection report of hostile environment measures, October 2016',
+                author: 'Independent Chief Inspector of Borders and Immigration ',
+                link: 'https://www.gov.uk/government/publications/inspection-report-of-hostile-environment-' +
+                    'measures-october-2016',
+                datePublished: '13 Oct 2016',
+                dateAccessed: '11 Apr 2019',
+            },
         ],
     },
     getters: {

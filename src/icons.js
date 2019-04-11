@@ -2,7 +2,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faMale,
     faFemale,
-    faChild, faCircleNotch, faUndo, faChevronDown,
+    faChild, faCircleNotch, faUndo, faChevronDown, faQuestionCircle, faPlay, faStop, faBackward, faForward,
 } from '@fortawesome/free-solid-svg-icons';
 
 /**
@@ -15,4 +15,9 @@ export function loadIcons() {
     library.add(faCircleNotch);
     library.add(faUndo);
     library.add(faChevronDown);
+    library.add(faQuestionCircle);
+    library.add(faPlay);
+    library.add(faStop);
+    library.add(faForward);
+    library.add(faBackward);
 }

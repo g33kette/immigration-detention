@@ -9,6 +9,34 @@
                 People Entering UK Immigration Detention
                 <span class="uk-text-muted">{{ showNames[show] }}</span>
             </h3>
+            <div>
+                <p>This chart shows all immigration detainees recorded for each year.</p>
+                <p>
+                    The <span class="uk-text-emphasis">"Hostile Environment"</span> marked on the charts began when the
+                    UK Government passed Immigration Act in 2014.
+                    The intention of this act was to deny illegal migrants access to public services and
+                    benefits to persuade them to depart voluntarily and deter migrants from trying to settle illegally.
+                    <br><citation tag="hostile-environment" />
+                </p>
+            </div>
+            <div>
+                <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
+                    View:
+                </label>
+                <button v-for="(n,k) in showNames" :key="k"
+                        :class="{
+                            'uk-button uk-button-small uk-margin uk-margin-left': true,
+                            'uk-button-default': show !== k,
+                            'uk-button-secondary': show === k,
+                        }"
+                        @click="show=k">
+                    {{ n }}
+                </button>
+                <p class="uk-margin-small uk-text-muted uk-text-italic">
+                    Asylum detainees relate to people detained solely under Immigration Act powers who are recorded as
+                    having claimed asylum at some stage, regardless of the outcome of the claim.
+                </p>
+            </div>
             <div class="uk-position-relative">
                 <loading v-if="rendering&&!loading" :opacity="0.5" />
                 <chart v-if="seriesData"
@@ -16,40 +44,33 @@
                        :x-axis-settings="xAxisSettings"
                        :series="series"
                        :series-data="Object.values(seriesData)"
-                       :colors="colors"
                        @updated="chartUpdated" />
             </div>
             <div class="uk-margin-top">
-                <p class="uk-text-muted uk-margin-small">
-                    (Note: You can click on the legend above to show or hide data)
-                </p>
                 <div>
                     <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
-                        Chart Type:
+                        Display:
                     </label>
                     <button v-for="(n,k) in displayTypeOptions" :key="k"
                             :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': displayType !== k,
                                 'uk-button-secondary': displayType === k,
+                                'uk-hidden': show === 'totals' && k.indexOf('-stacked') >= 0,
                             }"
                             @click="displayType=k">
                         {{ n }}
                     </button>
                 </div>
-                <div>
-                    <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
-                        Choose View:
-                    </label>
-                    <button v-for="(n,k) in showNames" :key="k"
-                            :class="{
-                                'uk-button uk-button-small uk-margin uk-margin-left': true,
-                                'uk-button-default': show !== k,
-                                'uk-button-secondary': show === k,
-                            }"
-                            @click="show=k">
-                        {{ n }}
-                    </button>
+                <div class="uk-margin-small">
+                    <span class="uk-text-bold"><font-awesome-icon icon="question-circle" /> Using The Chart</span>
+                    <ul class="uk-list-bullet uk-list">
+                        <li>You can click on the legend above to show or hide data.</li>
+                        <li>
+                            You can zoom and pan by using the slider at the top of the chart or by highlighting a
+                            section with the mouse.
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="uk-margin">
@@ -63,6 +84,7 @@
 import Chart from './Chart';
 import Citation from './Citation';
 import * as am4charts from '@amcharts/amcharts4/charts';
+import * as am4core from '@amcharts/amcharts4/core';
 import LoadingCover from './LoadingCover';
 import axios from 'axios';
 export default {
@@ -102,7 +124,7 @@ export default {
                 totals: 'Overall Totals',
                 gender: 'By Gender',
                 age: 'By Age',
-                asylum: 'by Asylum Request',
+                asylum: 'Asylum Detainees',
             },
             displayType: 'bar',
             displayTypeOptions: {
@@ -132,28 +154,51 @@ export default {
             return series;
         },
         xAxisSettings() {
+            const settings = {
+                ranges: [
+                    {
+                        grid: {
+                            stroke: am4core.color('#000000'),
+                            strokeOpacity: 0.6,
+                            strokeDasharray: '5,2',
+                        },
+                        axisFill: {
+                            fill: am4core.color('#f18713'),
+                            fillOpacity: 0.2,
+                        },
+                        label: {
+                            text: 'Hostile Environment Enforced',
+                            inside: true,
+                            valign: 'top',
+                        },
+                    },
+                ],
+            };
             switch (this.displayType) {
             case 'bar':
             case 'bar-stacked':
-                return { type: 'category', category: 'year' };
+                settings.type = 'category';
+                settings.category = 'year';
+                settings.ranges[0].category = 2014;
+                settings.ranges[0].endCategory = 2018;
+                break;
             case 'line':
             case 'line-stacked':
-                return { type: 'date' };
+                settings.type = 'date';
+                settings.ranges[0].label.horizontalCenter = 'left';
+                settings.ranges[0].date = new Date(2014, 6, 1);
+                settings.ranges[0].endDate = new Date(2018, 6, 1);
+                break;
             }
-            return null;
+            return settings;
         },
-        // colors() {
-        //     return [
-        //         am4core.color('#f18713'),
-        //         am4core.color('#ffc35c'),
-        //         am4core.color('#f89c2f'),
-        //         am4core.color('#e7b978'),
-        //     ];
-        // },
     },
     watch: {
         show() {
             this.rendering = true;
+            if (this.show === 'totals') {
+                this.displayType = this.displayType.replace('-stacked', '');
+            }
         },
     },
     mounted() {

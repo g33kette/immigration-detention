@@ -9,6 +9,34 @@
                 People In UK Immigration Detention
                 <span class="uk-text-muted">{{ showNames[show] }}</span>
             </h3>
+            <div>
+                <p>This chart shows the number of people in detention at the end of each quarter.</p>
+                <p>
+                    The <span class="uk-text-emphasis">"Hostile Environment"</span> marked on the charts began when the
+                    UK Government passed Immigration Act in 2014.
+                    The intention of this act was to deny illegal migrants access to public services and
+                    benefits to persuade them to depart voluntarily and deter migrants from trying to settle illegally.
+                    <br><citation tag="hostile-environment" />
+                </p>
+            </div>
+            <div>
+                <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
+                    View:
+                </label>
+                <button v-for="(n,k) in showNames" :key="k"
+                        :class="{
+                            'uk-button uk-button-small uk-margin uk-margin-left': true,
+                            'uk-button-default': show !== k,
+                            'uk-button-secondary': show === k,
+                        }"
+                        @click="show=k">
+                    {{ n }}
+                </button>
+                <p class="uk-margin-small uk-text-muted uk-text-italic">
+                    Asylum detainees relate to people detained solely under Immigration Act powers who are recorded as
+                    having claimed asylum at some stage, regardless of the outcome of the claim.
+                </p>
+            </div>
             <div class="uk-position-relative">
                 <loading v-show="rendering&&!loading" :opacity="0.5" />
                 <chart v-if="seriesData&&series.length"
@@ -19,36 +47,30 @@
                        @rendered="chartUpdated" />
             </div>
             <div class="uk-margin-top">
-                <p class="uk-text-muted uk-margin-small">
-                    (Note: You can click on the legend above to show or hide data)
-                </p>
                 <div>
                     <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
-                        Chart Type:
+                        Display:
                     </label>
                     <button v-for="(n,k) in displayTypeOptions" :key="k"
                             :class="{
                                 'uk-button uk-button-small uk-margin uk-margin-left': true,
                                 'uk-button-default': displayType !== k,
                                 'uk-button-secondary': displayType === k,
+                                'uk-hidden': show === 'totals' && k.indexOf('-stacked') >= 0,
                             }"
                             @click="displayType=k">
                         {{ n }}
                     </button>
                 </div>
-                <div>
-                    <label class="uk-form-label uk-text-secondary uk-text-bold uk-margin uk-margin-remove-top">
-                        Choose View:
-                    </label>
-                    <button v-for="(n,k) in showNames" :key="k"
-                            :class="{
-                                'uk-button uk-button-small uk-margin uk-margin-left': true,
-                                'uk-button-default': show !== k,
-                                'uk-button-secondary': show === k,
-                            }"
-                            @click="show=k">
-                        {{ n }}
-                    </button>
+                <div class="uk-margin-small">
+                    <span class="uk-text-bold"><font-awesome-icon icon="question-circle" /> Using The Chart</span>
+                    <ul class="uk-list-bullet uk-list">
+                        <li>You can click on the legend above to show or hide data.</li>
+                        <li>
+                            You can zoom and pan by using the slider at the top of the chart or by highlighting a
+                            section with the mouse.
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="uk-margin">
@@ -74,9 +96,8 @@ export default {
             rendering: true,
             seriesData: null,
             series: [],
-            centresData: null,
-            year: 2018,
-            staticAvailableSeries: {
+            year: 'total',
+            availableSeries: {
                 // totals
                 total_detainees: { name: 'Total Detainees', field: 'total_detainees' },
                 // gender
@@ -93,14 +114,14 @@ export default {
                 total_adult_detainees: { name: 'Adults', field: 'total_adult_detainees' },
                 total_child_detainees: { name: 'Children', field: 'total_child_detainees' },
             },
-            show: 'total',
+            show: 'totals',
             showNames: {
-                total: 'Overall Total',
+                totals: 'Overall Total',
                 gender: 'By Gender',
                 age: 'By Age',
-                asylum: 'By Asylum Request',
+                asylum: 'Asylum Detainees',
             },
-            displayType: 'bar',
+            displayType: 'line',
             displayTypeOptions: {
                 'bar': 'Bar Chart',
                 'bar-stacked': 'Stacked Bar Chart',
@@ -112,49 +133,47 @@ export default {
     computed: {
         showOptions() {
             return {
-                total: ['total_detainees'],
+                totals: ['total_detainees'],
                 gender: ['male', 'female'],
                 age: ['total_adult_detainees', 'total_child_detainees'],
                 asylum: ['total_asylum_detainees', 'total_non_asylum_detainees'],
-                centre: this.allDetentionCentreSeries,
             };
-        },
-        availableSeries() {
-            return {
-                ...this.staticAvailableSeries,
-                ...this.availableDetentionCentreSeries,
-            };
-        },
-        availableDetentionCentreSeries() {
-            if (!this.centresData) {
-                return {};
-            }
-            const colors = {
-                irc: { c: '#ff9603', l: 0 },
-                sthf: { c: '#1c1c1c', l: 0 },
-                pda: { c: '#8a8a8a', l: 0 },
-            };
-            const availableSeries = [];
-            for (const centre of this.centresData) {
-                availableSeries[centre.heading] = {
-                    name: centre.title,
-                    field: centre.heading,
-                    color: am4core.color(colors[centre.type].c).lighten(colors[centre.type].l),
-                };
-                colors[centre.type].l = colors[centre.type].l + .05;
-            }
-            return availableSeries;
-        },
-        allDetentionCentreSeries() {
-            return Object.keys(this.availableDetentionCentreSeries);
         },
         xAxisSettings() {
-            return { type: 'date', dateFormat: 'YYYY-MM', baseInterval: { timeUnit: 'month', count: 3 } };
+            return {
+                type: 'date',
+                dateFormat: 'YYYY-MM',
+                baseInterval: { timeUnit: 'month', count: 3 },
+                ranges: [
+                    {
+                        grid: {
+                            stroke: am4core.color('#000000'),
+                            strokeOpacity: 0.6,
+                            strokeDasharray: '5,2',
+                        },
+                        axisFill: {
+                            fill: am4core.color('#f18713'),
+                            fillOpacity: 0.2,
+                        },
+                        label: {
+                            text: 'Hostile Environment Enforced',
+                            inside: true,
+                            valign: 'top',
+                            horizontalCenter: 'left',
+                        },
+                        date: new Date(2014, 1, 1),
+                        endDate: new Date(2019, 1, 1),
+                    },
+                ],
+            };
         },
     },
     watch: {
         show() {
             this.rendering = true;
+            if (this.show === 'totals') {
+                this.displayType = this.displayType.replace('-stacked', '');
+            }
             setTimeout(() => this.updateSeries(), 50);
         },
         displayType() {
@@ -173,7 +192,6 @@ export default {
             this.loading = true;
             const responseData = (await this.callLoadData()).data;
             this.seriesData = responseData.data;
-            this.centresData = responseData.centres;
             this.loading = false;
         },
         updateSeries() {
@@ -198,13 +216,8 @@ export default {
             series.dataFields.valueY = field;
             series.dataFields.dateX = 'date';
             series.name = name;
-            if (show==='centre') {
-                series.columns.template.tooltipText = '{name}: [bold]{valueY}[/]';
-                series.cursorTooltipEnabled = false;
-            } else {
-                series.tooltipText = '{name}: [bold]{valueY}[/]';
-                series.cursorTooltipEnabled = true;
-            }
+            series.tooltipText = '{name}: [bold]{valueY}[/]';
+            series.cursorTooltipEnabled = true;
             series.columns.template.fillOpacity = .8;
             series.legendSettings.valueText = '{valueY}';
             series.sequencedInterpolation = false;
