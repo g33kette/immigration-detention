@@ -25,20 +25,23 @@ been available for these individuals since March 2006.
                 UK Immigration Detention
                 <span class="uk-text-muted">Longest Detention Periods</span>
             </h3>
-            <div v-if="seriesData">
-                <div class="uk-margin">
-                    <p>
-                        Show:
-                        <button v-for="y in Object.keys(seriesData).sort((a,b) => b-a)" :key="y"
-                                :class="{
-                                    'uk-button uk-button-default': true,
-                                    'uk-active': y===year
-                                }"
-                                @click="year=y">
-                            {{ y }}
-                        </button>
+            <div>
+                <div class="uk-margin-bottom">
+                    <p class="uk-text-bold uk-text-secondary">
+                        An individual may be detained indefinitely under the UK Immigration Act, although the
+                        Home Office has a statutory duty to review detention at least every 28 days.
                     </p>
+                    <p class="uk-text-emphasis uk-margin-remove">Reasons for detention include:</p>
+                    <ul class="uk-list uk-list-bullet uk-margin-remove-vertical">
+                        <li class="uk-margin-remove">Inability to provide adequate paperwork</li>
+                        <li class="uk-margin-remove">Non-compliance with immigration procedures</li>
+                        <li class="uk-margin-remove">Circumstantial barriers preventing deportation</li>
+                        <li class="uk-margin-remove">It is not in the public interest to allow release on bail</li>
+                    </ul>
+                    <citation tag="detention-stats-guide" />
                 </div>
+            </div>
+            <div v-if="seriesData">
                 <div class="uk-margin">
                     <h3>At the end of {{ year }}, the longest detention period was up to...</h3>
                     <detention-lengths-display :days="seriesData[year].max" @displayComplete="displayComplete=true" />
@@ -50,9 +53,22 @@ been available for these individuals since March 2006.
                         </p>
                     </div>
                 </div>
-                <div class="uk-margin uk-width-1-1">
-                    <citation tag="detention-stats" class="uk-align-right" />
-                </div>
+            </div>
+            <div class="uk-margin">
+                <p>
+                    <span class="uk-text-secondary uk-text-bold uk-margin-right">Show</span>
+                    <button v-for="y in Object.keys(seriesData).sort((a,b) => b-a)" :key="y"
+                            :class="{
+                                'uk-button uk-button-default': true,
+                                'uk-active': y===year
+                            }"
+                            @click="year=y">
+                        {{ y }}
+                    </button>
+                </p>
+            </div>
+            <div class="uk-margin uk-width-1-1">
+                <citation tag="detention-stats" class="uk-align-right" />
             </div>
         </div>
     </div>

@@ -10,6 +10,15 @@
                 UK Immigration Detention Centres
                 <span class="uk-text-muted">{{ year==='total'?'All Available Years':year }}</span>
             </h3>
+            <div>
+                <p>
+                    Detention centres have different functions and are spread around the UK.
+                </p>
+                <p>
+                    You can click on the names in the list below to see the location
+                    and max number of detainees by year.
+                </p>
+            </div>
             <div v-if="centresSeries" uk-grid>
                 <div class="uk-width-medium uk-height-large uk-overflow-auto">
                     <table class="uk-table uk-table-small uk-table-divider uk-table-hover uk-position-relative">
@@ -33,10 +42,9 @@
                             <tr v-for="c in centresSeries.all" :key="c.heading"
                                 :class="{
                                     'uk-pointer': true,
-                                    'uk-active': c.active&&selectedCentre===null,
+                                    'uk-active': c.active,
                                     'uk-selected': c.heading===selectedCentre
                                 }"
-                                xmouseenter="selectedCentre=c.heading"
                                 @click="selectedCentre=c.heading">
                                 <td>{{ c.title }}</td>
                             </tr>
@@ -106,7 +114,10 @@
                 </div>
             </div>
         </div>
-        <div class="uk-card uk-card-secondary uk-padding uk-width-1-1 uk-margin-large-top">
+        <div :class="{
+            'uk-card uk-card-secondary uk-padding uk-width-1-1 uk-margin-large-top uk-margin-large-bottom': true,
+            'conditions-section': true,
+        }">
             <div uk-grid>
                 <div class="uk-width-1-4">
                     <img src="../assets/images/yw3.jpg"
@@ -227,5 +238,9 @@ export default {
     }
     .uk-margin-xsmall-right {
         margin-right: 3px;
+    }
+    .conditions-section {
+        border-top: solid 2px $global-primary-background;
+        border-bottom: solid 2px $global-primary-background;
     }
 </style>

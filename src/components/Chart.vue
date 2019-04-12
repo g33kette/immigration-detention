@@ -1,7 +1,14 @@
 <!--
- * Navigation
+ * Chart
  *
- * Navigation Menu
+ * Example usage:
+ * <chart v-if="seriesData"
+ *       class="uk-height-large"
+ *       :x-axis-settings="xAxisSettings"           // Options to set up chart.xAxes.push(...);
+ *       :series="series"                           // Array of amcharts series, e.g. [ new am4charts.ColumnSeries() ]
+ *       :series-data="Object.values(seriesData)"   // Series data array
+ *       @updated="chartUpdating"                    // Event triggered when chart has started updating
+ *       @rendered="chartUpdated" />                 // Event triggered when chart has finished rendering
 -->
 <template>
     <div ref="chartdiv" class="component-chart" />

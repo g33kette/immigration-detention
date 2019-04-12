@@ -87,7 +87,6 @@
                         You can control which year to show beneath the map.
                     </p>
                 </div>
-
             </form>
             <div class="uk-position-relative uk-padding-small uk-padding-remove-horizontal">
                 <!--<loading v-if="rendering&&!loading" :opacity="0.5" />-->
@@ -100,8 +99,12 @@
             </div>
             <div class="legend uk-align-right uk-text-small uk-margin-remove">
                 <div class="legend-gradient" />
-                <span class="uk-align-left uk-margin-small uk-margin-remove-top">Low {{ lowValue | numberFormat }}</span>
-                <span class="uk-align-right uk-margin-small uk-margin-remove-top">High  {{ highValue | numberFormat }}</span>
+                <span class="uk-align-left uk-margin-small uk-margin-remove-top">
+                    Low {{ lowValue | numberFormat }}
+                </span>
+                <span class="uk-align-right uk-margin-small uk-margin-remove-top">
+                    High  {{ highValue | numberFormat }}
+                </span>
             </div>
             <form class="uk-form-horizontal uk-margin-bottom uk-clearfix" @submit.prevent>
                 <div v-show="year!=='total'" class="uk-width-1-1">
@@ -184,7 +187,7 @@ export default {
         return {
             loading: true,
             rendering: true,
-            year: 2018,
+            year: 'total',
             shading: 'total',
             availableYears: [],
             series: null,

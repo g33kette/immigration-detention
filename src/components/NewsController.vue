@@ -9,6 +9,9 @@
         </h2>
         <div class="uk-section-small uk-section-muted uk-padding">
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/independent.jpg">
+                </div>
                 <p span class="uk-text-bold">
                     Sex workers harassed, assaulted and illegally targeted for deportations amid culture of xenophobia after Brexit, campaigners say
                 </p>
@@ -22,6 +25,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/bbc.jpg">
+                </div>
                 <p span class="uk-text-bold">
                     Life as a Yarl's Wood immigration detainee 'like hell'
                 </p>
@@ -35,6 +41,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/guardian.png">
+                </div>
                 <p span class="uk-text-bold">
                     Judge rules £1/hr wages for immigration detainees are lawful
                 </p>
@@ -48,6 +57,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/guardian.png">
+                </div>
                 <p span class="uk-text-bold">
                     Catalogue of failings led to death of 'gentle' man at detention centre
                 </p>
@@ -61,6 +73,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/bbc.jpg">
+                </div>
                 <p span class="uk-text-bold">
                     Home Office 'utterly failing' over immigration detention centres
                 </p>
@@ -74,6 +89,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/independent.jpg">
+                </div>
                 <p span class="uk-text-bold">
                     More than 100 women in Yarl's Wood detention centre go on hunger strike over 'inhumane' conditions
                 </p>
@@ -87,6 +105,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/guardian.png">
+                </div>
                 <p span class="uk-text-bold">
                     Worse than prison: life inside Britain's 10 deportation centres
                 </p>
@@ -100,6 +121,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/bbc.jpg">
+                </div>
                 <p span class="uk-text-bold">
                     Mum and daughter home after Yarl's Wood detention
                 </p>
@@ -113,6 +137,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/independent.jpg">
+                </div>
                 <p span class="uk-text-bold">
                     Home Office holding torture victims with 'high level' mental health needs in detention, finds watchdog
                 </p>
@@ -126,6 +153,9 @@
                 </p>
             </div>
             <div class="uk-card uk-card-default uk-card-body uk-margin uk-width-1-1 uk-card-small ref">
+                <div class="uk-align-left">
+                    <img class="uk-border-circle news-logo" src="../assets/images/bbc.jpg">
+                </div>
                 <p span class="uk-text-bold">
                     What I saw when
                     I went undercover:
@@ -161,6 +191,10 @@ export default {
             margin-top: 0;
             margin-bottom: 0;
         }
+    }
+    .news-logo {
+        width: 80px;
+        height: 80px;
     }
 </style>
 
