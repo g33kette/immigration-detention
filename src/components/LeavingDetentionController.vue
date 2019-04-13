@@ -215,7 +215,7 @@ export default {
     },
     methods: {
         callLoadData() {
-            return axios.get('/data/leaving-entering-detention.json');
+            return axios.get('./data/leaving-entering-detention.json');
         },
         async loadSeriesData() {
             this.loading = true;

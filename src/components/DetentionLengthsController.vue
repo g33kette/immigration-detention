@@ -111,7 +111,7 @@ export default {
     },
     methods: {
         callLoadData() {
-            return axios.get('/data/detention-lengths.json');
+            return axios.get('./data/detention-lengths.json');
         },
         async loadSeriesData() {
             this.loading = true;

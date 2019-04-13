@@ -208,7 +208,7 @@ export default {
     },
     methods: {
         callLoadData() {
-            return axios.get('/data/detention-centres.json');
+            return axios.get('./data/detention-centres.json');
         },
         async loadSeriesData() {
             this.loading = true;

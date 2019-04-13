@@ -254,7 +254,7 @@ export default {
     },
     methods: {
         callLoadData() {
-            return axios.get('/data/detainee-origins.json');
+            return axios.get('./data/detainee-origins.json');
         },
         toggleAutoPlay() {
             if (!this.autoPlay) {

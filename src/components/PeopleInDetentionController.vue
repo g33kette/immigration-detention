@@ -186,7 +186,7 @@ export default {
     },
     methods: {
         callLoadData() {
-            return axios.get('/data/people-in-detention.json');
+            return axios.get('./data/people-in-detention.json');
         },
         async loadSeriesData() {
             this.loading = true;
