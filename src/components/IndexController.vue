@@ -97,7 +97,8 @@
                         <div uk-grid>
                             <div class="uk-width-1-3">
                                 <h3 class="uk-heading-bullet uk-text-emphasis">
-                                    Under UK Immigration Law you can be detained without charge and
+                                    Under UK Immigration Law you can be detained
+                                    <span class="uk-light">without charge</span> and
                                     <span class="uk-light">without limit</span>.
                                 </h3>
                                 <p>

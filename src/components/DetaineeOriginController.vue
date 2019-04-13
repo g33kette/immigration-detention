@@ -7,7 +7,7 @@
             <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
                 Origin of Detainees Entering UK Immigration Detention
-                <span class="uk-text-muted">{{ year==='total'?'All Available Years':year }}</span>
+                <span class="uk-text-muted">{{ year==='total'?(minYear + ' - ' + maxYear):year }}</span>
             </h3>
             <div>
                 <p>This map shows the nationality of people entering UK immigration detention.</p>
@@ -69,7 +69,7 @@
                                 'uk-button-secondary': year === 'total',
                             }"
                             @click="year='total'">
-                        Show All Years Combined
+                        Show {{ minYear }} - {{ maxYear }} Combined
                     </button>
                     <button :class="{
                                 'uk-button uk-button-small uk-margin-right': true,
@@ -79,58 +79,23 @@
                             @click="year=2018">
                         Show Years Independently
                     </button>
-                    <p v-if="year!=='total'"
-                       :class="{
-                           'uk-margin-small uk-text-muted uk-text-italic uk-text-small': true,
-                           'uk-display-inline-block uk-animation-fade': true,
-                       }">
-                        You can control which year to show beneath the map.
-                    </p>
                 </div>
-            </form>
-            <div class="uk-position-relative uk-padding-small uk-padding-remove-horizontal">
-                <!--<loading v-if="rendering&&!loading" :opacity="0.5" />-->
-                <map-chart v-if="series"
-                           class="map uk-height-large"
-                           :series-data="series"
-                           :active-series="year"
-                           :custom-template="customTemplate"
-                           @updated="mapUpdated" />
-            </div>
-            <div class="legend uk-align-right uk-text-small uk-margin-remove">
-                <div class="legend-gradient" />
-                <span class="uk-align-left uk-margin-small uk-margin-remove-top">
-                    Low {{ lowValue | numberFormat }}
-                </span>
-                <span class="uk-align-right uk-margin-small uk-margin-remove-top">
-                    High  {{ highValue | numberFormat }}
-                </span>
-            </div>
-            <form class="uk-form-horizontal uk-margin-bottom uk-clearfix" @submit.prevent>
                 <div v-show="year!=='total'" class="uk-width-1-1">
+
                     <div class="uk-margin">
-                        <input id="year"
-                               v-model="year"
-                               class="uk-range"
-                               type="range"
-                               :max="maxYear"
-                               :min="minYear"
-                               step="1">
-                    </div>
-                    <div class="uk-margin">
+                        <select v-model="year" class="uk-select uk-width-small uk-margin uk-margin-remove-vertical">
+                            <option v-for="y in availableYears.filter(x => x !== 'total')" :key="y" :value="y">
+                                {{ y }}
+                            </option>
+                        </select>
                         <button :class="{
-                                    'uk-button uk-button-default uk-margin-right': true,
+                                    'uk-button uk-button-default uk-margin-left': true,
                                     'uk-disabled uk-text-muted': year<=minYear,
                                 }"
                                 title="Previous Year"
                                 @click="year=year>minYear?year-1:year">
                             <font-awesome-icon icon="backward" />
                         </button>
-                        <select v-model="year" class="uk-select uk-width-small uk-margin uk-margin-remove-vertical">
-                            <option v-for="y in availableYears.filter(x => x !== 'total')" :key="y" :value="y">
-                                {{ y }}
-                            </option>
-                        </select>
                         <button :class="{
                                     'uk-button uk-button-default uk-margin-left': true,
                                     'uk-disabled uk-text-muted': year>=maxYear,
@@ -147,8 +112,35 @@
                             <font-awesome-icon :icon="autoPlay?'stop':'play'" />
                         </button>
                     </div>
+                    <div class="uk-margin">
+                        <input id="year"
+                               v-model="year"
+                               class="uk-range"
+                               type="range"
+                               :max="maxYear"
+                               :min="minYear"
+                               step="1">
+                    </div>
                 </div>
             </form>
+            <div class="uk-position-relative uk-padding-small uk-padding-remove-horizontal">
+                <loading v-if="rendering&&!loading&&!autoPlay" :opacity="0.5" />
+                <map-chart v-if="series"
+                           class="map uk-height-large"
+                           :series-data="series"
+                           :active-series="year"
+                           :custom-template="customTemplate"
+                           @updated="mapUpdated" />
+            </div>
+            <div class="legend uk-align-right uk-text-small uk-margin-remove">
+                <div class="legend-gradient" />
+                <span class="uk-align-left uk-margin-small uk-margin-remove-top">
+                    Low {{ lowValue | numberFormat }}
+                </span>
+                <span class="uk-align-right uk-margin-small uk-margin-remove-top">
+                    High  {{ highValue | numberFormat }}
+                </span>
+            </div>
             <div class="uk-margin-small">
                 <span class="uk-text-bold"><font-awesome-icon icon="question-circle" /> Using The Chart</span>
                 <ul class="uk-list-bullet uk-list">
@@ -252,8 +244,8 @@ export default {
         },
         year(newYear) {
             this.rendering = true;
-            if (typeof newYear === 'string') {
-                return parseInt(newYear);
+            if (newYear !== 'total' && typeof newYear === 'string') {
+                this.year = parseInt(newYear);
             }
         },
     },
@@ -351,7 +343,7 @@ export default {
         border-radius: 3px;
     }
     .uk-range {
-        border: solid 10px $global-secondary-background;
+        border: solid 10px #ccc;
     }
 </style>
 

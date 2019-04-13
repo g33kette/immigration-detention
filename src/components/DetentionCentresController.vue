@@ -8,7 +8,6 @@
             <loading v-if="loading" message="Loading Data..." />
             <h3 class="uk-heading-divider uk-h3 uk-text-center">
                 UK Immigration Detention Centres
-                <span class="uk-text-muted">{{ year==='total'?'All Available Years':year }}</span>
             </h3>
             <div>
                 <p>
@@ -115,7 +114,7 @@
             </div>
         </div>
         <div :class="{
-            'uk-card uk-card-secondary uk-padding uk-width-1-1 uk-margin-large-top uk-margin-large-bottom': true,
+            'uk-card uk-card-secondary uk-padding uk-width-1-1 uk-margin-remove-top uk-margin-large-bottom': true,
             'conditions-section': true,
         }">
             <div uk-grid>
@@ -165,7 +164,6 @@ export default {
             series: null,
             centresData: null,
             selectedCentre: null,
-            year: 2018,
         };
     },
     computed: {
@@ -240,7 +238,7 @@ export default {
         margin-right: 3px;
     }
     .conditions-section {
-        border-top: solid 2px $global-primary-background;
+        border-top: solid 6px $global-primary-background;
         border-bottom: solid 2px $global-primary-background;
     }
 </style>
