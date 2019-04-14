@@ -52,7 +52,7 @@
                                     <font-awesome-icon icon="male" size="6x" class="uk-margin-right" />
                                     <p class="uk-text-emphasis uk-alert uk-alert-primary uk-text-large uk-inline">
                                         <span class="uk-text-secondary uk-text-bold">{{ men | numberFormat }}</span>
-                                        Men
+                                        Male
                                     </p>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                                     <font-awesome-icon icon="female" size="5x" class="uk-margin-right" />
                                     <p class="uk-text-emphasis uk-alert uk-alert-primary uk-text-large uk-inline">
                                         <span class="uk-text-secondary uk-text-bold">{{ women | numberFormat }}</span>
-                                        Women
+                                        Female
                                     </p>
                                 </div>
                             </div>
@@ -72,17 +72,20 @@
                                         <span class="uk-text-secondary uk-text-bold">
                                             {{ children | numberFormat }}
                                         </span>
-                                        Children
+                                        Children *
                                     </p>
                                 </div>
                             </div>
                         </div>
                         <div class="uk-text-left">
-                            <p class="uk-heading-divider uk-h3 uk-text-muted uk-align-left">
-                                Overall, {{ men + women + children | numberFormat }} people entered immigration
-                                detention in 2018.
+                            <p class="uk-heading-divider uk-h3 uk-text-muted uk-margin-top">
+                                Overall, {{ total | numberFormat }} people entered immigration
+                                detention in 2018.<br>
                             </p>
-                            <citation tag="detention-stats" class="uk-align-right" />
+                            <p class="uk-text-small uk-text-muted uk-margin-remove">
+                                * Children are also counted in male/female figures.
+                            </p>
+                            <citation tag="detention-stats" class="" />
                         </div>
                     </div>
                 </div>
@@ -185,6 +188,7 @@ export default {
             men: 21107,
             women: 3641,
             children: 63,
+            total: 24748,
             euMapData: [
                 { id: 'GB', name: 'United Kingdom', color: am4core.color('#F8312C') },
                 { id: 'IE', name: 'Ireland', color: am4core.color('#F8312C') },
