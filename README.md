@@ -1,6 +1,8 @@
 # Information Visualisation Project
 # Immigration Detention
 
+https://immigration-detention.jobuxton.me.uk/#/
+
 ## Project setup
 ```
 npm install
@@ -15,4 +17,3 @@ npm run serve
 ```
 npm run build
 ```
-
